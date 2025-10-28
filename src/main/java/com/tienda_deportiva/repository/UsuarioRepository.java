@@ -38,4 +38,10 @@ public class UsuarioRepository {
                 usuario.getDni(), usuario.getNombre_completo(), usuario.getCorreo(),
                 usuario.getUsuario(), usuario.getContrasena(), usuario.getCargo(), usuario.getEstado());
     }
+
+    public Usuario buscarPorUsuarioYContrasena(String usuario, String contrasena) {
+        String sql = "SELECT * FROM usuario WHERE usuario = ? AND contrasena = ?";
+        List<Usuario> usuarios = jdbcTemplate.query(sql, usuarioMapper, usuario, contrasena);
+        return usuarios.isEmpty() ? null : usuarios.get(0);
+    }
 }

@@ -1,0 +1,215 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel del Administrador - DeportesX</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
+</head>
+<body>
+  <!-- NAVBAR PRINCIPAL -->
+  <nav class="navbar navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="${pageContext.request.contextPath}/admin/gestion">
+        <span style="color:#1976d2;font-weight:900;">X</span>
+        <span style="color:#fff;">DEPORTES x</span>
+      </a>
+      <button class="btn btn-outline-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
+        <i class="bi bi-list fs-4"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MENÚ LATERAL SOLO PARA ADMIN -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="menuLateral">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">Panel Administrador</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+      <a href="${pageContext.request.contextPath}/admin/gestion"><i class="bi bi-gear"></i> Gestión</a>
+      <a href="${pageContext.request.contextPath}/admin/metricas"><i class="bi bi-bar-chart-line"></i> Métricas</a>
+      <a href="${pageContext.request.contextPath}/admin/perfil-admin"><i class="bi bi-person-badge"></i> Mi cuenta</a>
+      <a href="${pageContext.request.contextPath}/login"><i class="bi bi-box-arrow-left"></i> Cerrar Sesión</a>
+    </div>
+  </div>
+
+  <div class="container my-5" style="margin-top: 110px; max-width: 1100px;">
+    <div class="card shadow-lg gestion-card mx-auto">
+      <div class="card-header text-center py-4">
+        <h2><i class="bi bi-person-gear"></i> Gestión </h2>
+      </div>
+      <div class="card-body">
+        <ul class="nav nav-tabs mb-4" id="gestionTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="productos-tab" data-bs-toggle="tab" data-bs-target="#productos" type="button" role="tab">
+              <i class="bi bi-box-seam"></i> Productos
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="ventas-tab" data-bs-toggle="tab" data-bs-target="#ventas" type="button" role="tab">
+              <i class="bi bi-cash-coin"></i> Ventas
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="empleados-tab" data-bs-toggle="tab" data-bs-target="#empleados" type="button" role="tab">
+              <i class="bi bi-people-fill"></i> Empleados
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="categorias-tab" data-bs-toggle="tab" data-bs-target="#categorias" type="button" role="tab">
+              <i class="bi bi-tags"></i> Categorías
+            </button>
+          </li>
+        </ul>
+        <div class="tab-content" id="gestionTabsContent">
+          <div class="tab-pane fade show active" id="productos" role="tabpanel">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4><i class="bi bi-box-seam"></i> Gestión de Productos</h4>
+              <a href="${pageContext.request.contextPath}/admin/gestion-crear" class="btn btn-success btn-sm">
+                <i class="bi bi-plus-circle"></i> Nuevo Producto
+              </a>
+            </div>
+            <table class="table table-hover text-center align-middle">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Precio</th>
+                  <th>Stock</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Pelota de Fútbol</td>
+                  <td>S/ 120.00</td>
+                  <td>50</td>
+                  <td>
+                    <a href="${pageContext.request.contextPath}/admin/gestion-editar" class="btn btn-outline-primary btn-sm">
+                      <i class="bi bi-pencil"></i> Editar
+                    </a>
+                    <button class="btn btn-outline-danger btn-sm" disabled>
+                      <i class="bi bi-trash"></i> Eliminar
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tab-pane fade" id="ventas" role="tabpanel">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4><i class="bi bi-cash-coin"></i> Ventas</h4>
+              <a href="#" class="btn btn-success btn-sm">
+                <i class="bi bi-plus-circle"></i> Nueva Venta
+              </a>
+            </div>
+            <table class="table table-hover text-center align-middle">
+              <thead>
+                <tr>
+                  <th>ID Venta</th>
+                  <th>Producto(s)</th>
+                  <th>Fecha</th>
+                  <th>Empleado</th> 
+                  <th>Total</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>001</td>
+                  <td>Guantes de Boxeo</td>
+                  <td>2025-09-10</td>
+                  <td>Jordan Acevedo</td> 
+                  <td>S/ 150.00</td>
+                  <td><span class="badge bg-success">Pagado</span></td>
+                  <td>
+                    <a href="#" class="btn btn-outline-primary btn-sm"><i class="bi bi-eye"></i> Ver</a>
+                    <button class="btn btn-outline-danger btn-sm" disabled><i class="bi bi-x-circle"></i> Anular</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tab-pane fade" id="empleados" role="tabpanel">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4><i class="bi bi-people-fill"></i> Empleados</h4>
+              <a href="${pageContext.request.contextPath}/admin/empleado-crear" class="btn btn-success btn-sm">
+                <i class="bi bi-person-plus"></i> Nuevo Empleado
+              </a>
+            </div>
+            <table class="table table-hover text-center align-middle">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>DNI</th>
+                  <th>Nombre Completo</th>
+                  <th>Cargo</th>
+                  <th>Correo</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>101</td>
+                  <td>75177414</td>
+                  <td>Jordan Acevedo</td>
+                  <td>Vendedor</td>
+                  <td>jacevedo@deportesx.com</td>
+                  <td>
+                    <a href="${pageContext.request.contextPath}/admin/empleado-editar" class="btn btn-outline-primary btn-sm">
+                      <i class="bi bi-pencil"></i> Editar
+                    </a>
+                    <button class="btn btn-outline-danger btn-sm" disabled>
+                      <i class="bi bi-trash"></i> Eliminar
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tab-pane fade" id="categorias" role="tabpanel">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4><i class="bi bi-tags"></i> Gestión de Categorías</h4>
+              <a href="${pageContext.request.contextPath}/admin/categoria-crear" class="btn btn-success btn-sm">
+                <i class="bi bi-plus-circle"></i> Nueva Categoría
+              </a>
+            </div>
+            <table class="table table-hover text-center align-middle">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Fútbol</td>
+                  <td><span class="badge bg-success">Activa</span></td>
+                  <td>
+                    <a href="${pageContext.request.contextPath}/admin/categoria-editar" class="btn btn-outline-primary btn-sm">
+                      <i class="bi bi-pencil"></i> Editar
+                    </a>
+                    <button class="btn btn-outline-danger btn-sm" disabled>
+                      <i class="bi bi-trash"></i> Eliminar
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

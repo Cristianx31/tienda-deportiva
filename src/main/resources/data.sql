@@ -1,7 +1,7 @@
 INSERT INTO usuario (dni, nombre_completo, correo, usuario, contrasena, cargo, estado)
 VALUES 
-('12345678', 'Juan Pérez', 'juan@correo.com', 'juanp', '1234', 'Administrador', TRUE),
-('87654321', 'Ana López', 'ana@correo.com', 'analo', '5678', 'Vendedor', TRUE);
+('12345678', 'Juan Pérez', 'juan@correo.com', 'admin', 'admin', 'Administrador', TRUE),
+('87654321', 'Alonso Garcia', 'alonso@correo.com', 'alonsog', 'alonso123', 'Vendedor', TRUE);
 
 INSERT INTO categoria (nombre, estado)
 VALUES 

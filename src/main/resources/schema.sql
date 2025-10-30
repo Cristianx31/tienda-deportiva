@@ -21,6 +21,8 @@ CREATE TABLE producto (
     descripcion VARCHAR(255),
     precio DOUBLE NOT NULL,
     stock INT NOT NULL,
+    imagen VARCHAR(255),         
+    estado BOOLEAN NOT NULL,     
     id_categoria INT,
     FOREIGN KEY (id_categoria) REFERENCES categoria(id_categoria)
 );

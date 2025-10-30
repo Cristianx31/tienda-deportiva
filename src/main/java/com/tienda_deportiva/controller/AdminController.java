@@ -1,6 +1,8 @@
 package com.tienda_deportiva.controller;
 
 import com.tienda_deportiva.service.EmpleadoService;
+import com.tienda_deportiva.service.CategoriaService; // <-- Importa el servicio
+import com.tienda_deportiva.service.ProductoService; // <-- Importa el servicio
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,10 +16,17 @@ public class AdminController {
     @Autowired
     private EmpleadoService empleadoService;
 
+    @Autowired
+    private CategoriaService categoriaService;
+
+    @Autowired
+    private ProductoService productoService;
+
     @GetMapping("/gestion")
     public String gestion(Model model) {
         model.addAttribute("empleados", empleadoService.listarTodos());
-        // Aquí puedes agregar productos, ventas, etc. cuando los tengas
+        model.addAttribute("categorias", categoriaService.listarTodas());
+        model.addAttribute("productos", productoService.listarTodos());
         return "admin/gestion";
     }
 }

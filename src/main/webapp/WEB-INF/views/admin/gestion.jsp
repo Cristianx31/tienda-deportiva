@@ -70,7 +70,7 @@
           <div class="tab-pane fade show active" id="productos" role="tabpanel">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h4><i class="bi bi-box-seam"></i> Gestión de Productos</h4>
-              <a href="${pageContext.request.contextPath}/admin/gestion-crear" class="btn btn-success btn-sm">
+              <a href="${pageContext.request.contextPath}/admin/producto-crear" class="btn btn-success btn-sm">
                 <i class="bi bi-plus-circle"></i> Nuevo Producto
               </a>
             </div>
@@ -79,26 +79,43 @@
                 <tr>
                   <th>ID</th>
                   <th>Nombre</th>
+                  <th>Imagen</th>
                   <th>Precio</th>
                   <th>Stock</th>
+                  <th>Estado</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Pelota de Fútbol</td>
-                  <td>S/ 120.00</td>
-                  <td>50</td>
-                  <td>
-                    <a href="${pageContext.request.contextPath}/admin/gestion-editar" class="btn btn-outline-primary btn-sm">
-                      <i class="bi bi-pencil"></i> Editar
-                    </a>
-                    <button class="btn btn-outline-danger btn-sm" disabled>
-                      <i class="bi bi-trash"></i> Eliminar
-                    </button>
-                  </td>
-                </tr>
+                <c:forEach var="producto" items="${productos}">
+                  <tr>
+                    <td>${producto.idProducto}</td>
+                    <td>${producto.nombre}</td>
+                    <td>
+                      <img src="${producto.imagen}" alt="Imagen" style="width:50px; height:50px; object-fit:cover;">
+                    </td>
+                    <td>S/ ${producto.precio}</td>
+                    <td>${producto.stock}</td>
+                    <td>
+                      <c:choose>
+                        <c:when test="${producto.estado}">
+                          <span class="badge bg-success">Activo</span>
+                        </c:when>
+                        <c:otherwise>
+                          <span class="badge bg-secondary">Inactivo</span>
+                        </c:otherwise>
+                      </c:choose>
+                    </td>
+                    <td>
+                      <a href="${pageContext.request.contextPath}/admin/producto-editar/${producto.idProducto}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-pencil"></i> Editar
+                      </a>
+                      <a href="${pageContext.request.contextPath}/admin/producto-eliminar/${producto.idProducto}" class="btn btn-outline-danger btn-sm" onclick="return confirm('¿Seguro que deseas eliminar este producto?');">
+                        <i class="bi bi-trash"></i> Eliminar
+                      </a>
+                    </td>
+                  </tr>
+                </c:forEach>
               </tbody>
             </table>
           </div>
@@ -141,7 +158,7 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h4><i class="bi bi-tags"></i> Gestión de Categorías</h4>
               <a href="${pageContext.request.contextPath}/admin/categoria-crear" class="btn btn-success btn-sm">
-                <i class="bi bi-plus-circle"></i> Nueva Categoría
+                <i class="bi.bi-plus-circle"></i> Nueva Categoría
               </a>
             </div>
             <table class="table table-hover text-center align-middle">
@@ -154,19 +171,30 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Fútbol</td>
-                  <td><span class="badge bg-success">Activa</span></td>
-                  <td>
-                    <a href="${pageContext.request.contextPath}/admin/categoria-editar" class="btn btn-outline-primary btn-sm">
-                      <i class="bi bi-pencil"></i> Editar
-                    </a>
-                    <button class="btn btn-outline-danger btn-sm" disabled>
-                      <i class="bi bi-trash"></i> Eliminar
-                    </button>
-                  </td>
-                </tr>
+                <c:forEach var="categoria" items="${categorias}">
+                  <tr>
+                    <td>${categoria.idCategoria}</td>
+                    <td>${categoria.nombre}</td>
+                    <td>
+                      <c:choose>
+                        <c:when test="${categoria.estado}">
+                          <span class="badge bg-success">Activa</span>
+                        </c:when>
+                        <c:otherwise>
+                          <span class="badge bg-secondary">Inactiva</span>
+                        </c:otherwise>
+                      </c:choose>
+                    </td>
+                    <td>
+                      <a href="${pageContext.request.contextPath}/admin/categoria-editar/${categoria.idCategoria}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-pencil"></i> Editar
+                      </a>
+                      <a href="${pageContext.request.contextPath}/admin/categoria-eliminar/${categoria.idCategoria}" class="btn btn-outline-danger btn-sm" onclick="return confirm('¿Seguro que deseas eliminar esta categoría?');">
+                        <i class="bi bi-trash"></i> Eliminar
+                      </a>
+                    </td>
+                  </tr>
+                </c:forEach>
               </tbody>
             </table>
           </div>
@@ -188,7 +216,7 @@
                   <th>ID</th>
                   <th>DNI</th>
                   <th>Nombre Completo</th>
-                  <th>Cargo</th>
+                  <th>Cargo</td>
                   <th>Correo</th>
                   <th>Estado</th>
                   <th>Acciones</th>

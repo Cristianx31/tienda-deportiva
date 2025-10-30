@@ -15,10 +15,14 @@ public class UsuarioService {
     }
 
     public List<Usuario> listarUsuarios() {
-        return usuarioRepository.findAll();
+        return usuarioRepository.listarTodos();
     }
 
     public int crearUsuario(Usuario usuario) {
-        return usuarioRepository.save(usuario);
+        return usuarioRepository.guardar(usuario);
+    }
+
+    public Usuario buscarPorUsuarioYContrasena(String usuario, String contrasena) {
+        return usuarioRepository.buscarPorUsuarioYContrasena(usuario, contrasena);
     }
 }

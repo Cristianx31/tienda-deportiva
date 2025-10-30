@@ -28,15 +28,15 @@ public class UsuarioRepository {
         return u;
     };
 
-    public List<Usuario> findAll() {
+    public List<Usuario> listarTodos() {
         return jdbcTemplate.query("SELECT * FROM usuario", usuarioMapper);
     }
 
-    public int save(Usuario usuario) {
+    public int guardar(Usuario usuario) {
         return jdbcTemplate.update(
                 "INSERT INTO usuario (dni, nombre_completo, correo, usuario, contrasena, cargo, estado) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                usuario.getDni(), usuario.getNombre_completo(), usuario.getCorreo(),
-                usuario.getUsuario(), usuario.getContrasena(), usuario.getCargo(), usuario.getEstado());
+                usuario.getDni(), usuario.getNombre_completo(), usuario.getCorreo(), usuario.getUsuario(),
+                usuario.getContrasena(), usuario.getCargo(), usuario.getEstado());
     }
 
     public Usuario buscarPorUsuarioYContrasena(String usuario, String contrasena) {

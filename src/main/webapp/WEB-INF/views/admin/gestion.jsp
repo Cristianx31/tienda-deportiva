@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
@@ -55,13 +56,13 @@
             </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="empleados-tab" data-bs-toggle="tab" data-bs-target="#empleados" type="button" role="tab">
-              <i class="bi bi-people-fill"></i> Empleados
+            <button class="nav-link" id="categorias-tab" data-bs-toggle="tab" data-bs-target="#categorias" type="button" role="tab">
+              <i class="bi bi-tags"></i> Categorías
             </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="categorias-tab" data-bs-toggle="tab" data-bs-target="#categorias" type="button" role="tab">
-              <i class="bi bi-tags"></i> Categorías
+            <button class="nav-link" id="empleados-tab" data-bs-toggle="tab" data-bs-target="#empleados" type="button" role="tab">
+              <i class="bi bi-people-fill"></i> Empleados
             </button>
           </li>
         </ul>
@@ -136,43 +137,6 @@
               </tbody>
             </table>
           </div>
-          <div class="tab-pane fade" id="empleados" role="tabpanel">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h4><i class="bi bi-people-fill"></i> Empleados</h4>
-              <a href="${pageContext.request.contextPath}/admin/empleado-crear" class="btn btn-success btn-sm">
-                <i class="bi bi-person-plus"></i> Nuevo Empleado
-              </a>
-            </div>
-            <table class="table table-hover text-center align-middle">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>DNI</th>
-                  <th>Nombre Completo</th>
-                  <th>Cargo</th>
-                  <th>Correo</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>101</td>
-                  <td>75177414</td>
-                  <td>Jordan Acevedo</td>
-                  <td>Vendedor</td>
-                  <td>jacevedo@deportesx.com</td>
-                  <td>
-                    <a href="${pageContext.request.contextPath}/admin/empleado-editar" class="btn btn-outline-primary btn-sm">
-                      <i class="bi bi-pencil"></i> Editar
-                    </a>
-                    <button class="btn btn-outline-danger btn-sm" disabled>
-                      <i class="bi bi-trash"></i> Eliminar
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
           <div class="tab-pane fade" id="categorias" role="tabpanel">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h4><i class="bi bi-tags"></i> Gestión de Categorías</h4>
@@ -203,6 +167,61 @@
                     </button>
                   </td>
                 </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tab-pane fade" id="empleados" role="tabpanel">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4><i class="bi bi-people-fill"></i> Empleados</h4>
+              <a href="${pageContext.request.contextPath}/admin/empleado-crear" class="btn btn-success btn-sm">
+                <i class="bi bi-person-plus"></i> Nuevo Empleado
+              </a>
+            </div>
+            <c:if test="${param.error == 'adminNoPuedeDesactivarse'}">
+              <div class="alert alert-danger mt-3" role="alert">
+                No puedes desactivar tu propia cuenta de administrador.
+              </div>
+            </c:if>
+            <table class="table table-hover text-center align-middle">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>DNI</th>
+                  <th>Nombre Completo</th>
+                  <th>Cargo</th>
+                  <th>Correo</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <c:forEach var="empleado" items="${empleados}">
+                  <tr>
+                    <td>${empleado.id}</td>
+                    <td>${empleado.dni}</td>
+                    <td>${empleado.nombreCompleto}</td>
+                    <td>${empleado.cargo}</td>
+                    <td>${empleado.correo}</td>
+                    <td>
+                      <c:choose>
+                        <c:when test="${empleado.estado}">
+                          <span class="badge bg-success">Activo</span>
+                        </c:when>
+                        <c:otherwise>
+                          <span class="badge bg-secondary">Inactivo</span>
+                        </c:otherwise>
+                      </c:choose>
+                    </td>
+                    <td>
+                      <a href="${pageContext.request.contextPath}/admin/empleado-editar/${empleado.id}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-pencil"></i> Editar
+                      </a>
+                      <a href="${pageContext.request.contextPath}/admin/empleado-eliminar/${empleado.id}" class="btn btn-outline-danger btn-sm" onclick="return confirm('¿Seguro que deseas eliminar este empleado?');">
+                        <i class="bi bi-trash"></i> Eliminar
+                      </a>
+                    </td>
+                  </tr>
+                </c:forEach>
               </tbody>
             </table>
           </div>

@@ -27,7 +27,7 @@
             </div>
           <% } %>
 
-          <form method="post" action="/login">
+          <form method="post" action="${pageContext.request.contextPath}/login">
             <!-- Usuario -->
             <div class="mb-3 input-group">
               <span class="input-group-text"><i class="bi bi-person"></i></span>

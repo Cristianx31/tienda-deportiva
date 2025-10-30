@@ -4,7 +4,7 @@ Proyecto de gestión de tienda deportiva desarrollado con Spring Boot y H2 (JDBC
 
 ## Descripción
 
-Esta aplicación permite administrar productos, clientes, ventas y usuarios de una tienda deportiva. El sistema utiliza H2 en memoria y acceso a datos con JDBC/JdbcTemplate.
+Esta aplicación permite administrar productos, clientes, ventas y empleados de una tienda deportiva. El sistema utiliza H2 en memoria y acceso a datos con JDBC/JdbcTemplate.
 
 ## Requisitos
 
@@ -14,11 +14,11 @@ Esta aplicación permite administrar productos, clientes, ventas y usuarios de u
 ## Instalación y ejecución
 
 1. Clona este repositorio:
-   ```
-   git clone git clone https://github.com/Cristianx31/tienda-deportiva.git
+   ```bash
+   git clone https://github.com/Cristianx31/tienda-deportiva.git
    ```
 2. Ejecuta el proyecto con Maven:
-   ```
+   ```bash
    mvn spring-boot:run
    ```
 3. Accede a la aplicación en [http://localhost:8081](http://localhost:8081)
@@ -35,17 +35,11 @@ Esta aplicación permite administrar productos, clientes, ventas y usuarios de u
 
 - `model/`: Clases de dominio (POJO)
 - `repository/`: Acceso a datos con JdbcTemplate
-- `controller/`: Controladores REST
+- `controller/`: Controladores Spring MVC
 - `service/`: Lógica de negocio
 - `resources/static/`: Recursos estáticos (CSS, JS, imágenes)
 - `webapp/WEB-INF/views/`: Vistas JSP
 - `application.properties`: Configuración
-
-## Colaboración
-
-1. Haz un fork del repositorio y crea tu propia rama para trabajar.
-2. Realiza tus cambios y crea un pull request para revisión.
-3. Usa issues para reportar problemas o sugerir mejoras.
 
 ## Créditos
 

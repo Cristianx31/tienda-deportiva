@@ -11,4 +11,10 @@ public class VendedorController {
     public String index() {
         return "vendedor/index";
     }
+
+    @GetMapping("/perfil")
+    public String perfilVendedor() {
+        return "vendedor/perfil-vendedor";
+    }
+
 }

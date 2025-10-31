@@ -1,8 +1,8 @@
 package com.tienda_deportiva.controller;
 
 import com.tienda_deportiva.service.EmpleadoService;
-import com.tienda_deportiva.service.CategoriaService; // <-- Importa el servicio
-import com.tienda_deportiva.service.ProductoService; // <-- Importa el servicio
+import com.tienda_deportiva.service.CategoriaService;
+import com.tienda_deportiva.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,5 +28,10 @@ public class AdminController {
         model.addAttribute("categorias", categoriaService.listarTodas());
         model.addAttribute("productos", productoService.listarTodos());
         return "admin/gestion";
+    }
+
+    @GetMapping("/perfil-admin")
+    public String perfilAdmin() {
+        return "admin/perfil-admin";
     }
 }

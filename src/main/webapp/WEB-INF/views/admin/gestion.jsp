@@ -34,7 +34,6 @@
       <a href="${pageContext.request.contextPath}/admin/gestion"><i class="bi bi-gear"></i> Gestión</a>
       <a href="${pageContext.request.contextPath}/admin/metricas"><i class="bi bi-bar-chart-line"></i> Métricas</a>
       <a href="${pageContext.request.contextPath}/admin/perfil-admin"><i class="bi bi-person-badge"></i> Mi cuenta</a>
-      <a href="${pageContext.request.contextPath}/login"><i class="bi bi-box-arrow-left"></i> Cerrar Sesión</a>
     </div>
   </div>
 

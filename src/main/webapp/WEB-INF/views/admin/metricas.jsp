@@ -169,7 +169,7 @@
         {
           nombre: '${cat.nombre}',
           cantidad: ${cat.cantidad_vendida}
-        }<c:if test="${!status.last && status.index < 4}">,</c:if>
+        }<c:if test="${status.index < 4 && status.count < fn:length(categoriasMes)}">,</c:if>
         </c:if>
       </c:forEach>
     ];
@@ -195,22 +195,25 @@
       type: 'bar',
       data: {
         labels: ventasLabels,
-        datasets: [{
-          label: 'Ventas Reales',
-          data: ventasData,
-          backgroundColor: 'rgba(25, 135, 84, 0.8)',
-          borderColor: 'rgba(25, 135, 84, 1)',
-          borderWidth: 2,
-          borderRadius: 5
-        }, {
-          label: 'Meta Mensual',
-          data: metaData,
-          backgroundColor: 'rgba(255, 193, 7, 0.3)',
-          borderColor: 'rgba(255, 193, 7, 1)',
-          borderWidth: 2,
-          borderDash: [5, 5],
-          type: 'line'
-        }]
+        datasets: [
+          {
+            label: 'Ventas Reales',
+            data: ventasData,
+            backgroundColor: 'rgba(25, 135, 84, 0.8)',
+            borderColor: 'rgba(25, 135, 84, 1)',
+            borderWidth: 2,
+            borderRadius: 5
+          },
+          {
+            label: 'Meta Mensual',
+            data: metaData,
+            backgroundColor: 'rgba(255, 193, 7, 0.3)',
+            borderColor: 'rgba(255, 193, 7, 1)',
+            borderWidth: 2,
+            borderDash: [5, 5],
+            type: 'line'
+          }
+        ]
       },
       options: {
         responsive: true,
@@ -255,12 +258,14 @@
       type: 'doughnut',
       data: {
         labels: categorias.map(c => c.nombre),
-        datasets: [{
-          data: categorias.map(c => c.cantidad),
-          backgroundColor: coloresCategorias,
-          borderWidth: 2,
-          borderColor: '#fff'
-        }]
+        datasets: [
+          {
+            data: categorias.map(c => c.cantidad),
+            backgroundColor: coloresCategorias,
+            borderWidth: 2,
+            borderColor: '#fff'
+          }
+        ]
       },
       options: {
         responsive: true,
@@ -291,20 +296,22 @@
       type: 'bar',
       data: {
         labels: ['Mes Anterior', 'Mes Actual'],
-        datasets: [{
-          label: 'Asistencia (%)',
-          data: [porcMesAnt, porcMesAct],
-          backgroundColor: [
-            'rgba(255, 193, 7, 0.6)',
-            'rgba(25, 135, 84, 0.8)'
-          ],
-          borderColor: [
-            'rgba(255, 193, 7, 1)',
-            'rgba(25, 135, 84, 1)'
-          ],
-          borderWidth: 2,
-          borderRadius: 5
-        }]
+        datasets: [
+          {
+            label: 'Asistencia (%)',
+            data: [porcMesAnt, porcMesAct],
+            backgroundColor: [
+              'rgba(255, 193, 7, 0.6)',
+              'rgba(25, 135, 84, 0.8)'
+            ],
+            borderColor: [
+              'rgba(255, 193, 7, 1)',
+              'rgba(25, 135, 84, 1)'
+            ],
+            borderWidth: 2,
+            borderRadius: 5
+          }
+        ]
       },
       options: {
         responsive: true,

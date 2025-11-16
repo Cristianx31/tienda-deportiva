@@ -24,7 +24,7 @@ public class CategoriaController {
     @PostMapping("/categoria-crear")
     public String crearCategoria(@ModelAttribute Categoria categoria) {
         categoriaService.guardar(categoria);
-        return "redirect:/admin/gestion";
+        return "redirect:/admin/gestion?tab=categorias";
     }
 
     @GetMapping("/categoria-editar/{id}")
@@ -36,7 +36,7 @@ public class CategoriaController {
     @PostMapping("/categoria-editar")
     public String editarCategoria(@ModelAttribute Categoria categoria) {
         categoriaService.actualizar(categoria);
-        return "redirect:/admin/gestion";
+        return "redirect:/admin/gestion?tab=categorias";
     }
 
     @GetMapping("/categoria-eliminar/{id}")
@@ -45,11 +45,11 @@ public class CategoriaController {
         if (categoriaService.tieneProductosAsociados(id)) {
             redirectAttributes.addFlashAttribute("errorCategoria", 
                 "No se puede eliminar la categoría porque tiene productos asociados.");
-            return "redirect:/admin/gestion";
+            return "redirect:/admin/gestion?tab=categorias";
         }
         
         categoriaService.eliminar(id);
         redirectAttributes.addFlashAttribute("successCategoria", "Categoría eliminada exitosamente.");
-        return "redirect:/admin/gestion";
+        return "redirect:/admin/gestion?tab=categorias";
     }
 }

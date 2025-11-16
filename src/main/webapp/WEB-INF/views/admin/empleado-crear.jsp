@@ -21,7 +21,7 @@
         </div>
         <div class="mb-3">
           <label for="nombreEmpleado" class="form-label">Nombre Completo</label>
-          <input type="text" class="form-control" id="nombreEmpleado" name="nombreCompleto" placeholder="Nombre Completo" required>
+          <input type="text" class="form-control" id="nombreEmpleado" name="nombre_completo" placeholder="Nombre Completo" required>
         </div>
         <div class="mb-3">
           <label for="cargoEmpleado" class="form-label">Cargo</label>
@@ -43,17 +43,21 @@
           <input type="password" class="form-control" id="passwordEmpleado" name="contrasena" placeholder="Contraseña" required>
         </div>
         <div class="row">
-          <div class="col-md-6 mb-3">
-            <label for="horaEntrada" class="form-label">Hora Entrada</label>
-            <input type="time" class="form-control" id="horaEntrada" name="horaEntrada" value="08:00" required>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="horaEntradaEmpleado" class="form-label">Hora de Entrada</label>
+              <input type="time" class="form-control" id="horaEntradaEmpleado" name="hora_entrada" required>
+            </div>
           </div>
-          <div class="col-md-6 mb-3">
-            <label for="horaSalida" class="form-label">Hora Salida</label>
-            <input type="time" class="form-control" id="horaSalida" name="horaSalida" value="17:00" required>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="horaSalidaEmpleado" class="form-label">Hora de Salida</label>
+              <input type="time" class="form-control" id="horaSalidaEmpleado" name="hora_salida" required>
+            </div>
           </div>
         </div>
         <div class="d-flex justify-content-between">
-          <a href="${pageContext.request.contextPath}/admin/gestion" class="btn btn-secondary">Cancelar</a>
+          <a href="${pageContext.request.contextPath}/admin/gestion?tab=empleados" class="btn btn-secondary">Cancelar</a>
           <button type="submit" class="btn btn-success">Crear Empleado</button>
         </div>
       </form>

@@ -14,19 +14,39 @@ public class UsuarioService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public List<Usuario> listarUsuarios() {
-        return usuarioRepository.listarTodos();
+    public List<Usuario> listarTodos() {
+        return usuarioRepository.findAll();
     }
 
     public int crearUsuario(Usuario usuario) {
-        return usuarioRepository.guardar(usuario);
+        return usuarioRepository.save(usuario);
+    }
+
+    public Usuario buscarPorId(Integer id) {
+        return usuarioRepository.findById(id);
+    }
+
+    public void actualizar(Usuario usuario) {
+        usuarioRepository.update(usuario);
+    }
+
+    public void eliminar(Integer id) {
+        usuarioRepository.delete(id);
     }
 
     public Usuario buscarPorUsuarioYContrasena(String usuario, String contrasena) {
-        return usuarioRepository.buscarPorUsuarioYContrasena(usuario, contrasena);
+        Usuario u = usuarioRepository.findByUsuario(usuario);
+        if (u != null && u.getContrasena().equals(contrasena)) {
+            return u;
+        }
+        return null;
     }
 
-    public boolean tieneVentasOAsistencias(int idUsuario) {
-        return usuarioRepository.tieneVentasOAsistencias(idUsuario);
+    public boolean tieneVentasOAsistencias(Integer idUsuario) {
+        return false;
+    }
+
+    public Usuario buscarPorUsuario(String usuario) {
+        return usuarioRepository.findByUsuario(usuario);
     }
 }

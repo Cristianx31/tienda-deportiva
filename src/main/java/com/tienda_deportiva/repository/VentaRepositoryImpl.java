@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class VentaDAOImpl implements VentaRepository {
+public class VentaRepositoryImpl implements VentaRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

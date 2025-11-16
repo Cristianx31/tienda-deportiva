@@ -7,8 +7,8 @@ CREATE TABLE usuario (
     contrasena VARCHAR(100) NOT NULL,
     cargo VARCHAR(20) NOT NULL,
     estado BOOLEAN NOT NULL,
-    hora_entrada TIME DEFAULT '08:00:00',
-    hora_salida TIME DEFAULT '17:00:00'
+    hora_entrada TIME,
+    hora_salida TIME
 );
 
 CREATE TABLE categoria (
@@ -59,9 +59,9 @@ CREATE TABLE detalle_venta (
 
 CREATE TABLE asistencia (
     id_asistencia INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario INT,
+    id_usuario INT NOT NULL,
     fecha DATE NOT NULL,
-    hora_ingreso TIME,
+    hora_ingreso TIME NOT NULL,
     hora_salida TIME,
     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
 );

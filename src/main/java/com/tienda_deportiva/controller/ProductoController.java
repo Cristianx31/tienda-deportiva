@@ -30,7 +30,7 @@ public class ProductoController {
     public String crearProducto(@ModelAttribute Producto producto, @RequestParam Boolean estado) {
         producto.setEstado(estado);
         productoService.guardar(producto);
-        return "redirect:/admin/gestion";
+        return "redirect:/admin/gestion?tab=productos";
     }
 
     @GetMapping("/producto-editar/{id}")
@@ -44,7 +44,7 @@ public class ProductoController {
     public String editarProducto(@ModelAttribute Producto producto, @RequestParam Boolean estado) {
         producto.setEstado(estado);
         productoService.actualizar(producto);
-        return "redirect:/admin/gestion";
+        return "redirect:/admin/gestion?tab=productos";
     }
 
     @GetMapping("/producto-eliminar/{id}")
@@ -53,11 +53,11 @@ public class ProductoController {
         if (productoService.tieneVentasAsociadas(id)) {
             redirectAttributes.addFlashAttribute("error", 
                 "No se puede eliminar el producto porque tiene ventas asociadas.");
-            return "redirect:/admin/gestion";
+            return "redirect:/admin/gestion?tab=productos";
         }
         
         productoService.eliminar(id);
         redirectAttributes.addFlashAttribute("success", "Producto eliminado exitosamente.");
-        return "redirect:/admin/gestion";
+        return "redirect:/admin/gestion?tab=productos";
     }
 }

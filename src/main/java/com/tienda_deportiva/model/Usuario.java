@@ -9,6 +9,8 @@ public class Usuario {
     private String contrasena;
     private String cargo;
     private Boolean estado;
+    private String hora_entrada;
+    private String hora_salida;
 
     public Integer getId_usuario() {
         return id_usuario;
@@ -72,5 +74,21 @@ public class Usuario {
 
     public void setEstado(Boolean estado) {
         this.estado = estado;
+    }
+
+    public String getHora_entrada() {
+        return hora_entrada;
+    }
+
+    public void setHora_entrada(String hora_entrada) {
+        this.hora_entrada = hora_entrada;
+    }
+
+    public String getHora_salida() {
+        return hora_salida;
+    }
+
+    public void setHora_salida(String hora_salida) {
+        this.hora_salida = hora_salida;
     }
 }

@@ -3,15 +3,23 @@ package com.tienda_deportiva.controller;
 import com.tienda_deportiva.service.ProductoService;
 import com.tienda_deportiva.service.CategoriaService;
 import com.tienda_deportiva.service.VentaService;
+import com.tienda_deportiva.service.AsistenciaService;
 import com.tienda_deportiva.model.Venta;
 import com.tienda_deportiva.model.DetalleVenta;
+import com.tienda_deportiva.model.Asistencia;
+import com.tienda_deportiva.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import jakarta.servlet.http.HttpSession;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Controller
@@ -26,9 +34,27 @@ public class VendedorController {
     
     @Autowired
     private VentaService ventaService;
+
+    @Autowired
+    private AsistenciaService asistenciaService;
     
     @GetMapping("/index")
-    public String index() {
+    public String index(HttpSession session, Model model) {
+        Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
+        if (usuarioActual != null) {
+            // Obtener asistencia de hoy
+            List<Asistencia> asistenciasHoy = asistenciaService.buscarPorIdUsuario(usuarioActual.getId_usuario());
+            Asistencia asistenciaHoy = null;
+            
+            for (Asistencia a : asistenciasHoy) {
+                if (a.getFecha().equals(LocalDate.now())) {
+                    asistenciaHoy = a;
+                    break;
+                }
+            }
+            
+            model.addAttribute("asistenciaHoy", asistenciaHoy);
+        }
         return "vendedor/index";
     }
 
@@ -65,13 +91,11 @@ public class VendedorController {
         return "vendedor/venta";
     }
 
-    // Endpoint temporal para venta-detalle sin ID (usa sessionStorage)
     @GetMapping("/venta-detalle")
     public String ventaDetalleTemp() {
         return "vendedor/venta-detalle";
     }
 
-    // Endpoint para venta-detalle con ID (usa base de datos)
     @GetMapping("/venta-detalle/{id}")
     public String ventaDetalle(@PathVariable Long id, Model model) {
         Venta venta = ventaService.buscarPorId(id);
@@ -85,19 +109,87 @@ public class VendedorController {
 
     @GetMapping("/ventas-empleado")
     public String ventasEmpleado(Model model) {
-        // Por ahora, usamos id_usuario = 2 (Alonso García) como ejemplo
         Long idUsuarioLogueado = 2L;
-        
-        // Obtener solo las ventas de este empleado usando DAO
         List<Venta> ventasEmpleado = ventaService.listarPorUsuario(idUsuarioLogueado);
-        
         model.addAttribute("ventas", ventasEmpleado);
         return "vendedor/ventas-empleado";
     }
 
-    @GetMapping("/asistencia")
-    public String asistencia() {
-        return "vendedor/asistencia";
+    @GetMapping("/ventas")
+    public String ventas(Model model) {
+        model.addAttribute("ventas", ventaService.listarTodas());
+        return "vendedor/ventas";
     }
 
+    // MARCAJE DE ASISTENCIA
+    @PostMapping("/marcar-entrada")
+    public String marcarEntrada(HttpSession session, RedirectAttributes redirectAttributes) {
+        Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
+        
+        if (usuarioActual == null) {
+            return "redirect:/login";
+        }
+
+        // Verificar si ya marcó entrada hoy
+        List<Asistencia> asistenciasHoy = asistenciaService.buscarPorIdUsuario(usuarioActual.getId_usuario());
+        boolean yaMarcoHoy = asistenciasHoy.stream()
+                .anyMatch(a -> a.getFecha().equals(LocalDate.now()));
+
+        if (yaMarcoHoy) {
+            redirectAttributes.addFlashAttribute("warning", "Ya marcaste entrada hoy");
+        } else {
+            Asistencia asistencia = new Asistencia();
+            asistencia.setIdUsuario(usuarioActual.getId_usuario());
+            asistencia.setFecha(LocalDate.now());
+            asistencia.setHoraIngreso(LocalTime.now());
+            asistenciaService.guardar(asistencia);
+            redirectAttributes.addFlashAttribute("success", "¡Entrada marcada correctamente!");
+        }
+
+        return "redirect:/vendedor/index";
+    }
+
+    @PostMapping("/marcar-salida")
+    public String marcarSalida(HttpSession session, RedirectAttributes redirectAttributes) {
+        Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
+        
+        if (usuarioActual == null) {
+            return "redirect:/login";
+        }
+
+        // Obtener asistencia de hoy
+        List<Asistencia> asistenciasHoy = asistenciaService.buscarPorIdUsuario(usuarioActual.getId_usuario());
+        Asistencia asistenciaHoy = null;
+        
+        for (Asistencia a : asistenciasHoy) {
+            if (a.getFecha().equals(LocalDate.now())) {
+                asistenciaHoy = a;
+                break;
+            }
+        }
+
+        if (asistenciaHoy == null) {
+            redirectAttributes.addFlashAttribute("error", "Debes marcar entrada primero");
+        } else if (asistenciaHoy.getHoraSalida() != null) {
+            redirectAttributes.addFlashAttribute("warning", "Ya marcaste salida hoy");
+        } else {
+            asistenciaHoy.setHoraSalida(LocalTime.now());
+            asistenciaService.actualizar(asistenciaHoy);
+            redirectAttributes.addFlashAttribute("success", "¡Salida marcada correctamente!");
+        }
+
+        return "redirect:/vendedor/index";
+    }
+
+    @GetMapping("/asistencia")
+    public String asistencia(HttpSession session, Model model) {
+        Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
+        
+        if (usuarioActual != null) {
+            List<Asistencia> miAsistencia = asistenciaService.buscarPorIdUsuario(usuarioActual.getId_usuario());
+            model.addAttribute("asistencias", miAsistencia);
+        }
+        
+        return "vendedor/asistencia";
+    }
 }

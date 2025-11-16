@@ -1,0 +1,74 @@
+package com.tienda_deportiva.model;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+public class Asistencia {
+    private int idAsistencia;
+    private int idUsuario;
+    private LocalDate fecha;
+    private LocalTime horaIngreso;
+    private LocalTime horaSalida;
+
+    public Asistencia() {
+    }
+
+    public Asistencia(int idAsistencia, int idUsuario, LocalDate fecha, LocalTime horaIngreso, LocalTime horaSalida) {
+        this.idAsistencia = idAsistencia;
+        this.idUsuario = idUsuario;
+        this.fecha = fecha;
+        this.horaIngreso = horaIngreso;
+        this.horaSalida = horaSalida;
+    }
+
+    public int getIdAsistencia() {
+        return idAsistencia;
+    }
+
+    public void setIdAsistencia(int idAsistencia) {
+        this.idAsistencia = idAsistencia;
+    }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+
+    public LocalTime getHoraIngreso() {
+        return horaIngreso;
+    }
+
+    public void setHoraIngreso(LocalTime horaIngreso) {
+        this.horaIngreso = horaIngreso;
+    }
+
+    public LocalTime getHoraSalida() {
+        return horaSalida;
+    }
+
+    public void setHoraSalida(LocalTime horaSalida) {
+        this.horaSalida = horaSalida;
+    }
+
+    @Override
+    public String toString() {
+        return "Asistencia{" +
+                "idAsistencia=" + idAsistencia +
+                ", idUsuario=" + idUsuario +
+                ", fecha=" + fecha +
+                ", horaIngreso=" + horaIngreso +
+                ", horaSalida=" + horaSalida +
+                '}';
+    }
+}

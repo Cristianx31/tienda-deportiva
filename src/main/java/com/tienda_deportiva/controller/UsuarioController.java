@@ -17,7 +17,7 @@ public class UsuarioController {
 
     @GetMapping
     public List<Usuario> listarUsuarios() {
-        return usuarioService.listarUsuarios();
+        return usuarioService.listarTodos();
     }
 
     @PostMapping

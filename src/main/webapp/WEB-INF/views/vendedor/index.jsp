@@ -46,15 +46,40 @@
   <main class="main-home container my-5 p-5 rounded text-center" style="margin-top: 150px;">
     <h1>¡Bienvenido a <strong>DEPORTES X</strong>!</h1>
     <p class="lead">Aquí encontrarás los mejores artículos deportivos para todas las disciplinas.</p>
+    
+    <!-- SECCIÓN DE ASISTENCIA -->
+    <div class="card bg-light p-4 my-4">
+      <h5>Mi Asistencia de Hoy</h5>
+      <c:if test="${asistenciaHoy != null}">
+        <p><strong>Entrada:</strong> ${asistenciaHoy.horaIngreso}</p>
+        <c:if test="${asistenciaHoy.horaSalida != null}">
+          <p><strong>Salida:</strong> ${asistenciaHoy.horaSalida}</p>
+        </c:if>
+      </c:if>
+      
+      <form method="post" class="d-flex gap-2 justify-content-center mt-3">
+        <c:if test="${asistenciaHoy == null}">
+          <button type="submit" formaction="${pageContext.request.contextPath}/vendedor/marcar-entrada" class="btn btn-success">
+            <i class="bi bi-check-circle"></i> Marcar Entrada
+          </button>
+        </c:if>
+        <c:if test="${asistenciaHoy != null && asistenciaHoy.horaSalida == null}">
+          <button type="submit" formaction="${pageContext.request.contextPath}/vendedor/marcar-salida" class="btn btn-danger">
+            <i class="bi bi-x-circle"></i> Marcar Salida
+          </button>
+        </c:if>
+        <c:if test="${asistenciaHoy != null && asistenciaHoy.horaSalida != null}">
+          <p class="text-success"><i class="bi bi-check2-all"></i> Asistencia completada</p>
+        </c:if>
+      </form>
+      
+      <a href="${pageContext.request.contextPath}/vendedor/asistencia" class="btn btn-info btn-sm mt-3">
+        <i class="bi bi-calendar-check"></i> Ver Historial
+      </a>
+    </div>
+
     <img src="${pageContext.request.contextPath}/assets/img/deporte-portada.jpg" alt="Artículos deportivos" class="img-fluid mt-3">
   </main>
-
-  <div class="container">
-    <div class="alert alert-envio text-center d-flex align-items-center justify-content-center" role="alert">
-      <span class="me-2"><i class="bi bi-truck"></i></span>
-      ¡Envío gratis en compras mayores a S/100! Solo por tiempo limitado.
-    </div>
-  </div>
 
   <div class="container mt-5">
     <h2 class="text-center mb-4">Categorías destacadas</h2>

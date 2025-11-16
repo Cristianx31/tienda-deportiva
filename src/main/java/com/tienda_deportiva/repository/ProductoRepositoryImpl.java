@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public class ProductoDAOImpl implements ProductoRepository {
+public class ProductoRepositoryImpl implements ProductoRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

@@ -1,15 +1,15 @@
 INSERT INTO usuario (dni, nombre_completo, correo, usuario, contrasena, cargo, estado, hora_entrada, hora_salida)
 VALUES 
-('12345678', 'Juan Pérez', 'juan@correo.com', 'admin', 'admin', 'Administrador', TRUE, '08:00:00', '17:00:00'),
-('72845901', 'Cristian Camarena Chavez', 'criscam@deportesx.com', 'cristian', 'Admin2024*', 'Administrador', TRUE, '08:00:00', '18:00:00'),
-('75123456', 'Smith Acevedo Ura', 'smitace@deportesx.com', 'smith', 'vendedor123', 'Vendedor', TRUE, '09:00:00', '18:00:00'),
-('71234567', 'Pool Chaupis Leguia', 'poolcha@deportesx.com', 'pool', 'vendedor123', 'Vendedor', TRUE, '08:30:00', '17:30:00'),
-('76543210', 'Jhair Martinez Llanos', 'jhaimar@deportesx.com', 'jhair', 'vendedor123', 'Vendedor', TRUE, '09:00:00', '18:00:00'),
-('73456789', 'Jesus Reyes Mendoza', 'jesusrey@deportesx.com', 'jesus', 'vendedor123', 'Vendedor', TRUE, '08:00:00', '17:00:00'),
-('70987654', 'Elena Torres Diaz', 'elenator@deportesx.com', 'elena', 'vendedor123', 'Vendedor', TRUE, '09:00:00', '18:00:00'),
-('74567890', 'Alberto Gomez Ruiz', 'albertog@deportesx.com', 'alberto', 'vendedor123', 'Vendedor', TRUE, '08:30:00', '17:30:00'),
-('72109876', 'Patricia Flores Santos', 'patriciafl@deportesx.com', 'patricia', 'vendedor123', 'Vendedor', TRUE, '08:00:00', '17:00:00'),
-('75678901', 'Fernando Ramirez Cruz', 'fernandor@deportesx.com', 'fernando', 'vendedor123', 'Vendedor', TRUE, '09:00:00', '18:00:00');
+('12345678', 'Juan Pérez', 'juan@deportesx.com', 'admin', 'admin', 'Administrador', TRUE, '08:00', '17:00'),
+('72845901', 'Cristian Camarena Chavez', 'criscam@deportesx.com', 'cristian', 'Admin2024*', 'Administrador', TRUE, '08:00', '18:00'),
+('75123456', 'Smith Acevedo Ura', 'smitace@deportesx.com', 'smith', 'vendedor123', 'Vendedor', TRUE, '09:00', '18:00'),
+('71234567', 'Pool Chaupis Leguia', 'poolcha@deportesx.com', 'pool', 'vendedor123', 'Vendedor', TRUE, '08:30', '17:30'),
+('76543210', 'Jhair Martinez Llanos', 'jhaimar@deportesx.com', 'jhair', 'vendedor123', 'Vendedor', TRUE, '09:00', '18:00'),
+('73456789', 'Jesus Reyes Mendoza', 'jesusrey@deportesx.com', 'jesus', 'vendedor123', 'Vendedor', TRUE, '08:00', '17:00'),
+('70987654', 'Elena Torres Diaz', 'elenator@deportesx.com', 'elena', 'vendedor123', 'Vendedor', TRUE, '09:00', '18:00'),
+('74567890', 'Alberto Gomez Ruiz', 'albertog@deportesx.com', 'alberto', 'vendedor123', 'Vendedor', TRUE, '08:30', '17:30'),
+('72109876', 'Patricia Flores Santos', 'patriciafl@deportesx.com', 'patricia', 'vendedor123', 'Vendedor', TRUE, '08:00', '17:00'),
+('75678901', 'Fernando Ramirez Cruz', 'fernandor@deportesx.com', 'fernando', 'vendedor123', 'Vendedor', TRUE, '09:00', '18:00');
 
 INSERT INTO categoria (nombre, estado)
 VALUES 

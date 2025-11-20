@@ -14,9 +14,11 @@ public interface VentaService {
     
     List<DetalleVenta> buscarDetallesPorVenta(Long idVenta);
     
-    void guardar(Venta venta);
+    Long guardar(Venta venta);
     
     void guardarDetalle(DetalleVenta detalle);
+    
+    Long guardarCliente(String nombre, String dni);
     
     void anularVenta(Long idVenta);
     

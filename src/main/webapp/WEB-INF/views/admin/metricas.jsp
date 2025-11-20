@@ -11,20 +11,6 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <style>
-    .chart-container {
-      position: relative;
-      height: 300px;
-      margin-bottom: 20px;
-    }
-    .metric-card {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .metric-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-    }
-  </style>
 </head>
 <body>
   <div class="container my-5">
@@ -33,298 +19,245 @@
         <i class="bi bi-arrow-left"></i> Volver
       </a>
     </div>
-    <div class="metricas-header mb-4">
-      <i class="bi bi-bar-chart-line-fill"></i>
-      <h2 class="text-center fw-bold text-primary">Métricas de la Tienda Deportiva</h2>
+    
+    <div class="text-center mb-4">
+      <h2 class="fw-bold text-primary"><i class="bi bi-bar-chart-line-fill me-2"></i>Panel de Métricas</h2>
     </div>
     
     <!-- Resumen General -->
-    <div class="row mb-4">
+    <div class="row mb-4 g-3">
       <div class="col-md-3">
         <div class="card text-center p-3 bg-primary text-white metric-card">
           <h6><i class="bi bi-cart-check-fill me-2"></i>Total Ventas</h6>
           <h3>${totalVentas}</h3>
-          <small>Todas las ventas</small>
+          <small>Registradas</small>
         </div>
       </div>
       <div class="col-md-3">
         <div class="card text-center p-3 bg-success text-white metric-card">
-          <h6><i class="bi bi-cash-stack me-2"></i>Ingresos Totales</h6>
-          <h3>S/ <fmt:formatNumber value="${ingresosTotales}" pattern="#,##0.00"/></h3>
-          <small>Ventas completadas</small>
+          <h6><i class="bi bi-cash-stack me-2"></i>Ingresos</h6>
+          <h3>S/ <fmt:formatNumber value="${ingresosTotales}" pattern="#,##0"/></h3>
+          <small>Total acumulado</small>
         </div>
       </div>
       <div class="col-md-3">
         <div class="card text-center p-3 bg-info text-white metric-card">
-          <h6><i class="bi bi-box-seam me-2"></i>Productos Activos</h6>
+          <h6><i class="bi bi-box-seam me-2"></i>Productos</h6>
           <h3>${productosActivos}</h3>
-          <small>En inventario</small>
+          <small>Activos</small>
         </div>
       </div>
       <div class="col-md-3">
         <div class="card text-center p-3 bg-warning text-white metric-card">
-          <h6><i class="bi bi-people-fill me-2"></i>Empleados Activos</h6>
+          <h6><i class="bi bi-people-fill me-2"></i>Empleados</h6>
           <h3>${empleadosActivos}</h3>
-          <small>Personal activo</small>
+          <small>Activos</small>
         </div>
       </div>
     </div>
     
-    <div class="dashboard-grid-metricas">
-      <!-- Ventas Mensuales con Gráfico -->
-      <div class="col-lg-6 col-md-6 d-flex">
-        <div class="card-metric p-4 flex-fill">
-          <h5 class="card-title mb-4 text-center">
-            <i class="bi bi-graph-up-arrow me-2"></i>Ventas Mensuales vs Meta
+    <div class="row g-4">
+      <!-- Ventas Mensuales -->
+      <div class="col-lg-6">
+        <div class="card p-4">
+          <h5 class="card-title mb-3 text-center">
+            <i class="bi bi-graph-up me-2 text-success"></i>Ventas Mensuales 2025
           </h5>
           <div class="chart-container">
-            <canvas id="chartVentasMensuales"></canvas>
+            <canvas id="chartVentas"></canvas>
           </div>
-          <div class="text-center mt-3">
-            <span class="badge bg-success me-2">Ventas Reales</span>
-            <span class="badge bg-warning">Meta Mensual: S/ 2,000</span>
+          <div class="text-center mt-2">
+            <small class="text-muted"><i class="bi bi-info-circle me-1"></i>Meta mensual: S/ 2,000</small>
           </div>
-          <small class="text-muted d-block mt-3 text-center">Actualizado: Noviembre 2025</small>
         </div>
       </div>
-      <!-- Categoría Más Vendida (Mes Actual) con Gráfico -->
-      <div class="col-lg-6 col-md-6 d-flex">
-        <div class="card-metric p-4 flex-fill">
-          <h5 class="card-title mb-4 text-center">
-            <i class="bi bi-pie-chart-fill me-2"></i>Categorías Más Vendidas (Mes Actual)
+      
+      <!-- Categorías -->
+      <div class="col-lg-6">
+        <div class="card p-4">
+          <h5 class="card-title mb-3 text-center">
+            <i class="bi bi-pie-chart-fill me-2 text-primary"></i>Top Categorías
           </h5>
           <div class="chart-container">
             <canvas id="chartCategorias"></canvas>
           </div>
-          <small class="text-muted d-block mt-3 text-center">Top 5 categorías del mes</small>
+          <div class="text-center mt-2">
+            <small class="text-muted">Noviembre 2025</small>
+          </div>
         </div>
       </div>
-      <!-- Asistencia de Empleados con Gráfico -->
-      <div class="col-lg-6 col-md-6 d-flex">
-        <div class="card-metric p-4 flex-fill">
-          <h5 class="card-title mb-4 text-center">
-            <i class="bi bi-calendar-check me-2"></i>Asistencia de Empleados
+      
+      <!-- Asistencia -->
+      <div class="col-lg-6">
+        <div class="card p-4">
+          <h5 class="card-title mb-3 text-center">
+            <i class="bi bi-calendar-check me-2 text-info"></i>Asistencia de Empleados
           </h5>
           <div class="chart-container">
             <canvas id="chartAsistencia"></canvas>
           </div>
-          <div class="text-center mt-3">
-            <c:set var="totalEmpleados" value="${asistencia.total_empleados}"/>
-            <c:set var="asistMes" value="${asistencia.empleados_asistieron_mes}"/>
-            <c:set var="porcMes" value="${totalEmpleados > 0 ? (asistMes * 100.0 / totalEmpleados) : 0}"/>
-            <span class="badge ${porcMes >= 80 ? 'bg-success' : 'bg-warning'}">
-              <fmt:formatNumber value="${porcMes}" pattern="#0.0"/>% asistencia este mes
-            </span>
-          </div>
-          <small class="text-muted d-block mt-3 text-center">Noviembre 2025</small>
         </div>
       </div>
-      <!-- Inventario Crítico -->
-      <div class="col-lg-6 col-md-6 d-flex">
-        <div class="card-metric p-4 flex-fill">
-          <h5 class="card-title mb-4 text-danger">
+      
+      <!-- Inventario -->
+      <div class="col-lg-6">
+        <div class="card p-4">
+          <h5 class="card-title mb-3 text-danger text-center">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>Inventario Crítico
           </h5>
           <c:choose>
             <c:when test="${empty inventarioCritico}">
-              <p class="text-success">
+              <div class="alert alert-success text-center">
                 <i class="bi bi-check-circle-fill me-2"></i>
-                ¡Excelente! No hay productos con stock crítico
-              </p>
+                ¡Excelente! Stock controlado
+              </div>
             </c:when>
             <c:otherwise>
-              <ul class="list-group mb-3">
+              <div class="list-group">
                 <c:forEach var="prod" items="${inventarioCritico}">
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                    ${prod.nombre}
+                  <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-box-seam me-2"></i>${prod.nombre}</span>
                     <span class="badge ${prod.stock < 3 ? 'bg-danger' : 'bg-warning'} rounded-pill">
-                      ${prod.stock}
+                      ${prod.stock} uds
                     </span>
-                  </li>
+                  </div>
                 </c:forEach>
-              </ul>
+              </div>
             </c:otherwise>
           </c:choose>
-          <small class="text-muted">Productos con stock menor a 5 unidades</small>
+          <small class="text-muted d-block mt-3 text-center">
+            <i class="bi bi-info-circle me-1"></i>Stock menor a 5 unidades
+          </small>
         </div>
       </div>
     </div>
   </div>
-
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Datos de ventas mensuales
-    const ventasMensuales = [
+    // @ts-nocheck
+    // Gráfico de Ventas Mensuales
+    const ventasData = [
       <c:forEach var="venta" items="${ventasMensuales}" varStatus="status">
-        {
-          mes: ${venta.mes},
-          total: ${venta.total_mes}
-        }<c:if test="${!status.last}">,</c:if>
+        {mes: ${venta.mes}, total: ${venta.total_mes}}<c:if test="${!status.last}">,</c:if>
       </c:forEach>
     ];
-
-    // Datos de categorías
-    const categorias = [
-      <c:forEach var="cat" items="${categoriasMes}" varStatus="status">
-        <c:if test="${status.index < 5}">
-        {
-          nombre: '${cat.nombre}',
-          cantidad: ${cat.cantidad_vendida}
-        }<c:if test="${status.index < 4 && status.count < fn:length(categoriasMes)}">,</c:if>
-        </c:if>
-      </c:forEach>
-    ];
-
-    // Datos de asistencia
-    const asistenciaData = {
-      mesAnterior: ${asistencia.empleados_asistieron_mes_anterior},
-      mesActual: ${asistencia.empleados_asistieron_mes},
-      total: ${asistencia.total_empleados}
-    };
-
-    const mesesNombres = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-    const metaMensual = 2000;
-
-    // Preparar datos para el gráfico de ventas
-    const ventasLabels = ventasMensuales.map(v => mesesNombres[v.mes - 1]);
-    const ventasData = ventasMensuales.map(v => v.total);
-    const metaData = ventasMensuales.map(() => metaMensual);
-
-    // Gráfico de Ventas Mensuales vs Meta
-    const ctxVentas = document.getElementById('chartVentasMensuales').getContext('2d');
+    
+    const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+    const ctxVentas = document.getElementById('chartVentas').getContext('2d');
     new Chart(ctxVentas, {
       type: 'bar',
       data: {
-        labels: ventasLabels,
-        datasets: [
-          {
-            label: 'Ventas Reales',
-            data: ventasData,
-            backgroundColor: 'rgba(25, 135, 84, 0.8)',
-            borderColor: 'rgba(25, 135, 84, 1)',
-            borderWidth: 2,
-            borderRadius: 5
-          },
-          {
-            label: 'Meta Mensual',
-            data: metaData,
-            backgroundColor: 'rgba(255, 193, 7, 0.3)',
-            borderColor: 'rgba(255, 193, 7, 1)',
-            borderWidth: 2,
-            borderDash: [5, 5],
-            type: 'line'
-          }
-        ]
+        labels: ventasData.map(v => meses[v.mes - 1]),
+        datasets: [{
+          label: 'Ventas',
+          data: ventasData.map(v => v.total),
+          backgroundColor: ventasData.map(v => v.total >= 2000 ? '#28a745' : (v.total >= 1400 ? '#ffc107' : '#dc3545')),
+          borderColor: '#1976d2',
+          borderWidth: 2,
+          borderRadius: 8
+        }, {
+          label: 'Meta',
+          data: ventasData.map(() => 2000),
+          type: 'line',
+          borderColor: '#ff9800',
+          borderWidth: 3,
+          borderDash: [10, 5],
+          fill: false,
+          pointRadius: 0
+        }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: {
-            display: true,
-            position: 'top'
-          },
+          legend: { display: true, position: 'top' },
           tooltip: {
             callbacks: {
-              label: function(context) {
-                return context.dataset.label + ': S/ ' + context.parsed.y.toFixed(2);
-              }
+              label: (context) => context.dataset.label + ': S/ ' + context.parsed.y.toLocaleString()
             }
           }
         },
         scales: {
           y: {
             beginAtZero: true,
-            ticks: {
-              callback: function(value) {
-                return 'S/ ' + value;
-              }
-            }
+            ticks: { callback: (value) => 'S/ ' + value }
           }
         }
       }
     });
-
-    // Gráfico de Categorías (Dona)
-    const ctxCategorias = document.getElementById('chartCategorias').getContext('2d');
-    const coloresCategorias = [
-      'rgba(25, 135, 84, 0.8)',
-      'rgba(13, 202, 240, 0.8)',
-      'rgba(220, 53, 69, 0.8)',
-      'rgba(13, 110, 253, 0.8)',
-      'rgba(108, 117, 125, 0.8)'
+    
+    // Gráfico de Categorías
+    const categoriasData = [
+      <c:forEach var="cat" items="${categoriasMes}" varStatus="status">
+        <c:if test="${status.index < 5}">
+          {nombre: '${cat.nombre}', cantidad: ${cat.cantidad_vendida}}<c:if test="${!status.last && status.index < 4}">,</c:if>
+        </c:if>
+      </c:forEach>
     ];
     
+    const ctxCategorias = document.getElementById('chartCategorias').getContext('2d');
     new Chart(ctxCategorias, {
       type: 'doughnut',
       data: {
-        labels: categorias.map(c => c.nombre),
-        datasets: [
-          {
-            data: categorias.map(c => c.cantidad),
-            backgroundColor: coloresCategorias,
-            borderWidth: 2,
-            borderColor: '#fff'
-          }
-        ]
+        labels: categoriasData.map(c => c.nombre),
+        datasets: [{
+          data: categoriasData.map(c => c.cantidad),
+          backgroundColor: ['#007bff', '#17a2b8', '#28a745', '#ffc107', '#6c757d'],
+          borderWidth: 2,
+          borderColor: '#fff'
+        }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: {
-            position: 'bottom'
-          },
+          legend: { position: 'bottom' },
           tooltip: {
             callbacks: {
-              label: function(context) {
+              label: (context) => {
                 const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                const porcentaje = ((context.parsed / total) * 100).toFixed(1);
-                return context.label + ': ' + context.parsed + ' uds (' + porcentaje + '%)';
+                const pct = ((context.parsed / total) * 100).toFixed(1);
+                return context.label + ': ' + context.parsed + ' (' + pct + '%)';
               }
             }
           }
         }
       }
     });
-
-    // Gráfico de Asistencia (Barras)
-    const ctxAsistencia = document.getElementById('chartAsistencia').getContext('2d');
-    const porcMesAnt = asistenciaData.total > 0 ? (asistenciaData.mesAnterior / asistenciaData.total * 100) : 0;
-    const porcMesAct = asistenciaData.total > 0 ? (asistenciaData.mesActual / asistenciaData.total * 100) : 0;
     
+    // Gráfico de Asistencia
+    const asistenciaData = {
+      anterior: ${asistencia.empleados_asistieron_mes_anterior},
+      actual: ${asistencia.empleados_asistieron_mes},
+      total: ${asistencia.total_empleados}
+    };
+    
+    const pctAnt = (asistenciaData.anterior / asistenciaData.total * 100).toFixed(0);
+    const pctAct = (asistenciaData.actual / asistenciaData.total * 100).toFixed(0);
+    
+    const ctxAsistencia = document.getElementById('chartAsistencia').getContext('2d');
     new Chart(ctxAsistencia, {
       type: 'bar',
       data: {
-        labels: ['Mes Anterior', 'Mes Actual'],
-        datasets: [
-          {
-            label: 'Asistencia (%)',
-            data: [porcMesAnt, porcMesAct],
-            backgroundColor: [
-              'rgba(255, 193, 7, 0.6)',
-              'rgba(25, 135, 84, 0.8)'
-            ],
-            borderColor: [
-              'rgba(255, 193, 7, 1)',
-              'rgba(25, 135, 84, 1)'
-            ],
-            borderWidth: 2,
-            borderRadius: 5
-          }
-        ]
+        labels: ['Octubre', 'Noviembre'],
+        datasets: [{
+          label: 'Asistencia (%)',
+          data: [pctAnt, pctAct],
+          backgroundColor: ['#ffc107', pctAct >= 80 ? '#28a745' : '#ffc107'],
+          borderColor: '#1976d2',
+          borderWidth: 2,
+          borderRadius: 8
+        }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: {
-            display: false
-          },
+          legend: { display: false },
           tooltip: {
             callbacks: {
-              label: function(context) {
-                return 'Asistencia: ' + context.parsed.y.toFixed(1) + '%';
-              }
+              label: (context) => 'Asistencia: ' + context.parsed.y + '%'
             }
           }
         },
@@ -332,11 +265,7 @@
           y: {
             beginAtZero: true,
             max: 100,
-            ticks: {
-              callback: function(value) {
-                return value + '%';
-              }
-            }
+            ticks: { callback: (value) => value + '%' }
           }
         }
       }

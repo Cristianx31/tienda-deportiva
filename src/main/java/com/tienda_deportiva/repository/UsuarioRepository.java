@@ -15,7 +15,6 @@ public class UsuarioRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
-    @SuppressWarnings("null")
     private final RowMapper<Usuario> rowMapper = new RowMapper<Usuario>() {
         @Override
         public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -34,13 +33,11 @@ public class UsuarioRepository {
         }
     };
     
-    @SuppressWarnings("null")
     public List<Usuario> findAll() {
         String sql = "SELECT * FROM usuario";
         return jdbcTemplate.query(sql, rowMapper);
     }
     
-    @SuppressWarnings("null")
     public Usuario findById(Integer id) {
         String sql = "SELECT * FROM usuario WHERE id_usuario = ?";
         List<Usuario> usuarios = jdbcTemplate.query(sql, rowMapper, id);
@@ -85,7 +82,6 @@ public class UsuarioRepository {
         return jdbcTemplate.update(sql, id);
     }
     
-    @SuppressWarnings("null")
     public Usuario findByUsuario(String usuario) {
         String sql = "SELECT * FROM usuario WHERE usuario = ?";
         List<Usuario> usuarios = jdbcTemplate.query(sql, rowMapper, usuario);

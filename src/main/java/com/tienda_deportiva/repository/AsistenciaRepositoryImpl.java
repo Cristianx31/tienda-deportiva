@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -27,7 +28,7 @@ public class AsistenciaRepositoryImpl implements AsistenciaRepository {
 
     @Override
     public List<Asistencia> listarTodas() {
-        String sql = "SELECT * FROM asistencia ORDER BY fecha DESC";
+        String sql = "SELECT * FROM asistencia ORDER BY fecha DESC, id_asistencia DESC";
         return jdbcTemplate.query(sql, this::mapRow);
     }
 
@@ -39,8 +40,14 @@ public class AsistenciaRepositoryImpl implements AsistenciaRepository {
 
     @Override
     public List<Asistencia> buscarPorIdUsuario(Integer idUsuario) {
-        String sql = "SELECT * FROM asistencia WHERE id_usuario = ? ORDER BY fecha DESC";
+        String sql = "SELECT * FROM asistencia WHERE id_usuario = ? ORDER BY fecha DESC, id_asistencia DESC";
         return jdbcTemplate.query(sql, this::mapRow, idUsuario);
+    }
+    
+    @Override
+    public Asistencia buscarPorUsuarioYFecha(Integer idUsuario, LocalDate fecha) {
+        String sql = "SELECT * FROM asistencia WHERE id_usuario = ? AND fecha = ?";
+        return jdbcTemplate.query(sql, rs -> rs.next() ? mapRow(rs, 1) : null, idUsuario, fecha);
     }
 
     @Override

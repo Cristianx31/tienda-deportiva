@@ -2,6 +2,8 @@ package com.tienda_deportiva.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 public class Asistencia {
     private int idAsistencia;
@@ -59,6 +61,22 @@ public class Asistencia {
 
     public void setHoraSalida(LocalTime horaSalida) {
         this.horaSalida = horaSalida;
+    }
+    
+    // Métodos auxiliares para JSP (que requiere java.util.Date)
+    public Date getFechaAsDate() {
+        if (fecha == null) return null;
+        return Date.from(fecha.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+    
+    public Date getHoraIngresoAsDate() {
+        if (horaIngreso == null || fecha == null) return null;
+        return Date.from(fecha.atTime(horaIngreso).atZone(ZoneId.systemDefault()).toInstant());
+    }
+    
+    public Date getHoraSalidaAsDate() {
+        if (horaSalida == null || fecha == null) return null;
+        return Date.from(fecha.atTime(horaSalida).atZone(ZoneId.systemDefault()).toInstant());
     }
 
     @Override

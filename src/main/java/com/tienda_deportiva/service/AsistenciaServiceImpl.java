@@ -5,6 +5,7 @@ import com.tienda_deportiva.repository.AsistenciaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -26,6 +27,11 @@ public class AsistenciaServiceImpl implements AsistenciaService {
     @Override
     public List<Asistencia> buscarPorIdUsuario(Integer idUsuario) {
         return asistenciaRepository.buscarPorIdUsuario(idUsuario);
+    }
+    
+    @Override
+    public Asistencia buscarPorUsuarioYFecha(Integer idUsuario, LocalDate fecha) {
+        return asistenciaRepository.buscarPorUsuarioYFecha(idUsuario, fecha);
     }
 
     @Override

@@ -189,7 +189,7 @@ public class VendedorController {
             redirectAttributes.addFlashAttribute("success", "¡Entrada marcada correctamente!");
         }
 
-        return "redirect:/vendedor/index";
+        return "redirect:/vendedor/asistencia";
     }
 
     @PostMapping("/marcar-salida")
@@ -219,7 +219,7 @@ public class VendedorController {
             redirectAttributes.addFlashAttribute("success", "¡Salida marcada correctamente!");
         }
 
-        return "redirect:/vendedor/index";
+        return "redirect:/vendedor/asistencia";
     }
 
     @GetMapping("/asistencia")
@@ -230,11 +230,37 @@ public class VendedorController {
         Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
         
         if (usuarioActual != null) {
-            List<Asistencia> miAsistencia = asistenciaService.buscarPorIdUsuario(usuarioActual.getId_usuario());
-            model.addAttribute("asistencias", miAsistencia);
+            // Obtener asistencia del día actual
+            Asistencia asistenciaHoy = asistenciaService.buscarPorUsuarioYFecha(
+                usuarioActual.getId_usuario(), 
+                LocalDate.now()
+            );
+            
+            // Obtener todas las asistencias del usuario (últimos 30 días)
+            List<Asistencia> misAsistencias = asistenciaService.buscarPorIdUsuario(usuarioActual.getId_usuario());
+            
+            model.addAttribute("asistenciaHoy", asistenciaHoy);
+            model.addAttribute("asistencias", misAsistencias);
         }
         
         return "vendedor/asistencia";
+    }
+
+    @GetMapping("/historial-asistencia")
+    public String historialAsistencia(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarVendedor(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
+        Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
+        
+        if (usuarioActual != null) {
+            // Obtener TODAS las asistencias del usuario
+            List<Asistencia> todasAsistencias = asistenciaService.buscarPorIdUsuario(usuarioActual.getId_usuario());
+            model.addAttribute("asistencias", todasAsistencias);
+            model.addAttribute("usuario", usuarioActual);
+        }
+        
+        return "vendedor/historial-asistencia";
     }
 
     @SuppressWarnings("unchecked")
@@ -337,27 +363,29 @@ public class VendedorController {
         }
         
         try {
+            // 1. Guardar cliente
+            Long idCliente = ventaService.guardarCliente(nombreCliente, dniCliente);
+            
+            // 2. Crear y guardar venta
             Venta venta = new Venta();
-            venta.setNombreCliente(nombreCliente);
-            venta.setDniCliente(dniCliente);
             venta.setFecha(LocalDate.now());
             venta.setTotal(carrito.stream()
                     .mapToDouble(i -> i.getPrecio() * i.getCantidad())
                     .sum());
             venta.setEstado("Completada");
+            venta.setIdCliente(idCliente);
             
             Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
             if (usuarioActual != null) {
                 venta.setIdUsuario(usuarioActual.getId_usuario().longValue());
             }
             
-            ventaService.guardar(venta);
+            Long idVenta = ventaService.guardar(venta);
             
-            Venta ventaGuardada = ventaService.buscarPorId(venta.getIdVenta());
-            
+            // 3. Guardar detalles de venta
             for (CarritoItem item : carrito) {
                 DetalleVenta detalle = new DetalleVenta();
-                detalle.setIdVenta(ventaGuardada.getIdVenta());
+                detalle.setIdVenta(idVenta);
                 detalle.setIdProducto(item.getIdProducto());
                 detalle.setCantidad(item.getCantidad());
                 detalle.setPrecioUnitario(item.getPrecio());
@@ -365,10 +393,11 @@ public class VendedorController {
                 ventaService.guardarDetalle(detalle);
             }
             
+            // 4. Limpiar carrito
             session.removeAttribute("carrito");
             
-            redirectAttributes.addFlashAttribute("success", "¡Venta registrada exitosamente! ID: " + ventaGuardada.getIdVenta());
-            return "redirect:/vendedor/venta-detalle/" + ventaGuardada.getIdVenta();
+            redirectAttributes.addFlashAttribute("success", "¡Venta registrada exitosamente! ID: " + idVenta);
+            return "redirect:/vendedor/venta-detalle/" + idVenta;
             
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al guardar la venta: " + e.getMessage());

@@ -74,7 +74,7 @@ public class VentaRepositoryImpl implements VentaRepository {
                      "FROM venta v " +
                      "LEFT JOIN usuario u ON v.id_usuario = u.id_usuario " +
                      "LEFT JOIN cliente c ON v.id_cliente = c.id_cliente " +
-                     "ORDER BY v.fecha DESC";
+                     "ORDER BY v.fecha DESC, v.id_venta DESC";
         return jdbcTemplate.query(sql, this::mapRowVenta);
     }
 
@@ -88,7 +88,7 @@ public class VentaRepositoryImpl implements VentaRepository {
                      "LEFT JOIN usuario u ON v.id_usuario = u.id_usuario " +
                      "LEFT JOIN cliente c ON v.id_cliente = c.id_cliente " +
                      "WHERE v.id_usuario = ? " +
-                     "ORDER BY v.fecha DESC";
+                     "ORDER BY v.fecha DESC, v.id_venta DESC";
         return jdbcTemplate.query(sql, this::mapRowVenta, idUsuario);
     }
 
@@ -115,7 +115,7 @@ public class VentaRepositoryImpl implements VentaRepository {
     }
 
     @Override
-    public void guardar(Venta venta) {
+    public Long guardar(Venta venta) {
         String sql = "INSERT INTO venta (fecha, total, estado, id_usuario, id_cliente) " +
                      "VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, 
@@ -124,6 +124,20 @@ public class VentaRepositoryImpl implements VentaRepository {
             venta.getEstado(), 
             venta.getIdUsuario(), 
             venta.getIdCliente());
+        
+        // Obtener el ID generado
+        String sqlId = "SELECT MAX(id_venta) FROM venta";
+        return jdbcTemplate.queryForObject(sqlId, Long.class);
+    }
+    
+    @Override
+    public Long guardarCliente(String nombre, String dni) {
+        String sql = "INSERT INTO cliente (nombre, dni) VALUES (?, ?)";
+        jdbcTemplate.update(sql, nombre, dni);
+        
+        // Obtener el ID generado
+        String sqlId = "SELECT MAX(id_cliente) FROM cliente";
+        return jdbcTemplate.queryForObject(sqlId, Long.class);
     }
 
     @Override

@@ -815,3 +815,22 @@ body {
         padding: 1rem 0.5rem 0.5rem 0.5rem;
     }
 }
+
+/* ----------- Métricas con Gráficos ----------- */
+.metric-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+    height: 100%;
+}
+.metric-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin: 20px 0;
+}
+canvas {
+    max-height: 300px;
+}

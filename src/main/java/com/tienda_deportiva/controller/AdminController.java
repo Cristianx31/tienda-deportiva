@@ -78,7 +78,24 @@ public class AdminController {
         String validacion = securityService.validarAdmin(session, redirectAttributes);
         if (validacion != null) return validacion;
         
-        model.addAttribute("empleado", usuarioService.buscarPorId(id));
+        Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
+        Usuario empleado = usuarioService.buscarPorId(id);
+        
+        // Nadie puede editar al usuario 'admin' (id 1)
+        if (empleado.getId_usuario() == 1) {
+            redirectAttributes.addFlashAttribute("errorEmpleado", 
+                "No se puede editar al administrador principal.");
+            return "redirect:/admin/gestion?tab=empleados";
+        }
+        
+        // Solo el usuario 'admin' puede editar a otros administradores
+        if ("Administrador".equals(empleado.getCargo()) && usuarioActual.getId_usuario() != 1) {
+            redirectAttributes.addFlashAttribute("errorEmpleado", 
+                "Solo el administrador principal puede editar a otros administradores.");
+            return "redirect:/admin/gestion?tab=empleados";
+        }
+        
+        model.addAttribute("empleado", empleado);
         return "admin/empleado-editar";
     }
 
@@ -87,6 +104,23 @@ public class AdminController {
                                  @RequestParam String estado, RedirectAttributes redirectAttributes) {
         String validacion = securityService.validarAdmin(session, redirectAttributes);
         if (validacion != null) return validacion;
+        
+        Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
+        Usuario empleadoExistente = usuarioService.buscarPorId(usuario.getId_usuario());
+        
+        // Nadie puede editar al usuario 'admin' (id 1)
+        if (empleadoExistente.getId_usuario() == 1) {
+            redirectAttributes.addFlashAttribute("errorEmpleado", 
+                "No se puede editar al administrador principal.");
+            return "redirect:/admin/gestion?tab=empleados";
+        }
+        
+        // Solo el usuario 'admin' puede editar a otros administradores
+        if ("Administrador".equals(empleadoExistente.getCargo()) && usuarioActual.getId_usuario() != 1) {
+            redirectAttributes.addFlashAttribute("errorEmpleado", 
+                "Solo el administrador principal puede editar a otros administradores.");
+            return "redirect:/admin/gestion?tab=empleados";
+        }
         
         usuario.setEstado(Boolean.valueOf(estado));
         usuarioService.actualizar(usuario);
@@ -97,6 +131,23 @@ public class AdminController {
     public String eliminarEmpleado(HttpSession session, @PathVariable Integer id, RedirectAttributes redirectAttributes) {
         String validacion = securityService.validarAdmin(session, redirectAttributes);
         if (validacion != null) return validacion;
+        
+        Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
+        Usuario empleado = usuarioService.buscarPorId(id);
+        
+        // Nadie puede eliminar al usuario 'admin' (id 1)
+        if (empleado.getId_usuario() == 1) {
+            redirectAttributes.addFlashAttribute("errorEmpleado", 
+                "No se puede eliminar al administrador principal.");
+            return "redirect:/admin/gestion?tab=empleados";
+        }
+        
+        // Solo el usuario 'admin' puede eliminar a otros administradores
+        if ("Administrador".equals(empleado.getCargo()) && usuarioActual.getId_usuario() != 1) {
+            redirectAttributes.addFlashAttribute("errorEmpleado", 
+                "Solo el administrador principal puede eliminar a otros administradores.");
+            return "redirect:/admin/gestion?tab=empleados";
+        }
         
         if (usuarioService.tieneVentasOAsistencias(id)) {
             redirectAttributes.addFlashAttribute("errorEmpleado", 
@@ -140,7 +191,8 @@ public class AdminController {
         if (validacion != null) return validacion;
         
         ventaService.anularVenta(id);
-        return "redirect:/admin/gestion";
+        redirectAttributes.addFlashAttribute("successVenta", "Venta anulada exitosamente.");
+        return "redirect:/admin/gestion?tab=ventas";
     }
 
     @GetMapping("/metricas")

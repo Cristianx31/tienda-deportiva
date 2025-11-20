@@ -59,135 +59,55 @@ VALUES
 
 INSERT INTO venta (fecha, total, estado, id_usuario, id_cliente)
 VALUES 
--- Ventas de Noviembre (mes actual)
-(CURRENT_DATE, 395.00, 'Pagado', 3, 1),
-(DATEADD('DAY', -2, CURRENT_DATE), 520.00, 'Pagado', 4, 2),
-(DATEADD('DAY', -5, CURRENT_DATE), 780.00, 'Pagado', 5, 3),
-(DATEADD('DAY', -7, CURRENT_DATE), 450.00, 'Pagado', 6, 4),
-(DATEADD('DAY', -10, CURRENT_DATE), 890.00, 'Pagado', 7, 5),
--- Ventas de Octubre
-(DATEADD('DAY', -15, CURRENT_DATE), 650.00, 'Pagado', 8, 6),
-(DATEADD('DAY', -20, CURRENT_DATE), 720.00, 'Pagado', 9, 7),
-(DATEADD('DAY', -25, CURRENT_DATE), 580.00, 'Pagado', 10, 8),
-(DATEADD('DAY', -28, CURRENT_DATE), 920.00, 'Pagado', 3, 9),
-(DATEADD('DAY', -30, CURRENT_DATE), 410.00, 'Pagado', 4, 10),
--- Ventas de Septiembre
-(DATEADD('MONTH', -2, CURRENT_DATE), 890.00, 'Pagado', 5, 1),
-(DATEADD('DAY', -65, CURRENT_DATE), 670.00, 'Pagado', 6, 2),
-(DATEADD('DAY', -70, CURRENT_DATE), 530.00, 'Pagado', 7, 3),
--- Venta anulada
-(DATEADD('DAY', -12, CURRENT_DATE), 350.00, 'Anulado', 8, 4);
+-- Ordenadas cronológicamente (más antigua primero)
+(DATEADD('DAY', -30, CURRENT_DATE), 850.00, 'Pagado', 9, 7),      -- ID 1: 21 Oct
+(DATEADD('DAY', -25, CURRENT_DATE), 920.00, 'Pagado', 8, 6),      -- ID 2: 26 Oct
+(DATEADD('DAY', -12, CURRENT_DATE), 250.00, 'Anulado', 3, 8),     -- ID 3: 08 Nov (Anulada)
+(DATEADD('DAY', -10, CURRENT_DATE), 680.00, 'Pagado', 7, 5),      -- ID 4: 10 Nov
+(DATEADD('DAY', -7, CURRENT_DATE), 540.00, 'Pagado', 6, 4),       -- ID 5: 13 Nov
+(DATEADD('DAY', -5, CURRENT_DATE), 720.00, 'Pagado', 5, 3),       -- ID 6: 15 Nov
+(DATEADD('DAY', -2, CURRENT_DATE), 590.00, 'Pagado', 4, 2),       -- ID 7: 18 Nov
+(CURRENT_DATE, 470.00, 'Pagado', 3, 1);                            -- ID 8: 20 Nov (Hoy)
 
 INSERT INTO detalle_venta (id_venta, id_producto, cantidad, precio_unitario, subtotal)
 VALUES 
--- Venta 1 (Noviembre - Jordan)
-(1, 1, 1, 350.00, 350.00),
-(1, 2, 1, 45.00, 45.00),
--- Venta 2 (Noviembre - Piero)
-(2, 3, 2, 120.00, 240.00),
-(2, 7, 1, 280.00, 280.00),
--- Venta 3 (Noviembre - Marco)
-(3, 8, 2, 150.00, 300.00),
-(3, 9, 1, 450.00, 450.00),
-(3, 16, 2, 70.00, 140.00),
--- Venta 4 (Noviembre - Harol)
-(4, 4, 2, 169.00, 338.00),
-(4, 5, 1, 69.30, 69.30),
-(4, 17, 2, 45.00, 90.00),
--- Venta 5 (Noviembre - Maria)
-(5, 11, 2, 180.00, 360.00),
-(5, 12, 1, 220.00, 220.00),
-(5, 13, 3, 90.00, 270.00),
-(5, 17, 2, 45.00, 90.00),
--- Venta 6 (Octubre - Carlos)
+-- Venta 1 (Patricia - 21/10) - S/ 850
+(1, 7, 2, 280.00, 560.00),
+(1, 15, 1, 110.00, 110.00),
+(1, 11, 1, 180.00, 180.00),
+-- Venta 2 (Alberto - 26/10) - S/ 920
+(2, 1, 1, 350.00, 350.00),
+(2, 14, 2, 130.00, 260.00),
+(2, 12, 1, 220.00, 220.00),
+(2, 13, 1, 90.00, 90.00),
+-- Venta 3 (Smith - 08/11 - Anulada) - S/ 250
+(3, 4, 1, 169.00, 169.00),
+(3, 17, 2, 45.00, 90.00),
+-- Venta 4 (Elena - 10/11) - S/ 680
+(4, 8, 2, 150.00, 300.00),
+(4, 11, 2, 180.00, 360.00),
+-- Venta 5 (Jesus - 13/11) - S/ 540
+(5, 9, 1, 450.00, 450.00),
+(5, 13, 1, 90.00, 90.00),
+-- Venta 6 (Jhair - 15/11) - S/ 720
 (6, 1, 1, 350.00, 350.00),
-(6, 14, 2, 130.00, 260.00),
-(6, 17, 2, 45.00, 90.00),
--- Venta 7 (Octubre - Ana)
-(7, 7, 2, 280.00, 560.00),
-(7, 15, 1, 110.00, 110.00),
-(7, 2, 1, 45.00, 45.00),
--- Venta 8 (Octubre - Luis)
-(8, 6, 1, 599.00, 599.00),
-(8, 5, 2, 69.30, 138.60),
--- Venta 9 (Octubre - Jordan)
-(9, 9, 1, 450.00, 450.00),
-(9, 11, 2, 180.00, 360.00),
-(9, 13, 1, 90.00, 90.00),
--- Venta 10 (Octubre - Piero)
-(10, 3, 2, 120.00, 240.00),
-(10, 16, 2, 70.00, 140.00),
-(10, 17, 1, 45.00, 45.00),
--- Venta 11 (Septiembre - Marco)
-(11, 1, 2, 350.00, 700.00),
-(11, 7, 1, 280.00, 280.00),
--- Venta 12 (Septiembre - Harol)
-(12, 8, 3, 150.00, 450.00),
-(12, 12, 1, 220.00, 220.00),
--- Venta 13 (Septiembre - Maria)
-(13, 14, 3, 130.00, 390.00),
-(13, 15, 1, 110.00, 110.00),
-(13, 17, 1, 45.00, 45.00),
--- Venta 14 (Anulada - Carlos)
-(14, 1, 1, 350.00, 350.00);
+(6, 7, 1, 280.00, 280.00),
+(6, 13, 1, 90.00, 90.00),
+-- Venta 7 (Pool - 18/11) - S/ 590
+(7, 3, 2, 120.00, 240.00),
+(7, 12, 1, 220.00, 220.00),
+(7, 14, 1, 130.00, 130.00),
+-- Venta 8 (Smith - 20/11 Hoy) - S/ 470
+(8, 1, 1, 350.00, 350.00),
+(8, 3, 1, 120.00, 120.00);
 
 INSERT INTO asistencia (id_usuario, fecha, hora_ingreso, hora_salida)
 VALUES 
--- Asistencia mes actual (Noviembre) - Semana 1
-(1, CURRENT_DATE, '08:00:00', '17:00:00'),
-(2, CURRENT_DATE, '08:00:00', '18:00:00'),
-(3, CURRENT_DATE, '09:00:00', '18:00:00'),
-(4, CURRENT_DATE, '08:30:00', '17:30:00'),
-(5, CURRENT_DATE, '09:00:00', '18:00:00'),
-(6, CURRENT_DATE, '08:00:00', '17:00:00'),
-(7, CURRENT_DATE, '09:00:00', '18:00:00'),
-(8, CURRENT_DATE, '08:30:00', '17:30:00'),
-(9, CURRENT_DATE, '08:00:00', '17:00:00'),
-(10, CURRENT_DATE, '09:00:00', '18:00:00'),
--- Día -1
-(1, DATEADD('DAY', -1, CURRENT_DATE), '08:00:00', '17:00:00'),
-(2, DATEADD('DAY', -1, CURRENT_DATE), '08:00:00', '18:00:00'),
-(3, DATEADD('DAY', -1, CURRENT_DATE), '09:00:00', '18:00:00'),
-(4, DATEADD('DAY', -1, CURRENT_DATE), '08:30:00', '17:30:00'),
-(5, DATEADD('DAY', -1, CURRENT_DATE), '09:00:00', '18:00:00'),
-(6, DATEADD('DAY', -1, CURRENT_DATE), '08:00:00', '17:00:00'),
-(7, DATEADD('DAY', -1, CURRENT_DATE), '09:00:00', '18:00:00'),
-(8, DATEADD('DAY', -1, CURRENT_DATE), '08:30:00', '17:30:00'),
--- Día -2 (faltó Ana)
-(1, DATEADD('DAY', -2, CURRENT_DATE), '08:00:00', '17:00:00'),
-(2, DATEADD('DAY', -2, CURRENT_DATE), '08:00:00', '18:00:00'),
-(3, DATEADD('DAY', -2, CURRENT_DATE), '09:00:00', '18:00:00'),
-(4, DATEADD('DAY', -2, CURRENT_DATE), '08:30:00', '17:30:00'),
-(5, DATEADD('DAY', -2, CURRENT_DATE), '09:00:00', '18:00:00'),
-(6, DATEADD('DAY', -2, CURRENT_DATE), '08:00:00', '17:00:00'),
-(7, DATEADD('DAY', -2, CURRENT_DATE), '09:00:00', '18:00:00'),
-(10, DATEADD('DAY', -2, CURRENT_DATE), '09:00:00', '18:00:00'),
--- Día -3
-(1, DATEADD('DAY', -3, CURRENT_DATE), '08:00:00', '17:00:00'),
-(2, DATEADD('DAY', -3, CURRENT_DATE), '08:00:00', '18:00:00'),
-(3, DATEADD('DAY', -3, CURRENT_DATE), '09:00:00', '18:00:00'),
-(4, DATEADD('DAY', -3, CURRENT_DATE), '08:30:00', '17:30:00'),
-(5, DATEADD('DAY', -3, CURRENT_DATE), '09:00:00', '18:00:00'),
-(7, DATEADD('DAY', -3, CURRENT_DATE), '09:00:00', '18:00:00'),
-(8, DATEADD('DAY', -3, CURRENT_DATE), '08:30:00', '17:30:00'),
-(9, DATEADD('DAY', -3, CURRENT_DATE), '08:00:00', '17:00:00'),
-(10, DATEADD('DAY', -3, CURRENT_DATE), '09:00:00', '18:00:00'),
--- Asistencia mes anterior (Octubre)
-(1, DATEADD('MONTH', -1, CURRENT_DATE), '08:00:00', '17:00:00'),
-(2, DATEADD('MONTH', -1, CURRENT_DATE), '08:00:00', '18:00:00'),
-(3, DATEADD('MONTH', -1, CURRENT_DATE), '09:00:00', '18:00:00'),
-(4, DATEADD('MONTH', -1, CURRENT_DATE), '08:30:00', '17:30:00'),
-(5, DATEADD('MONTH', -1, CURRENT_DATE), '09:00:00', '18:00:00'),
-(6, DATEADD('MONTH', -1, CURRENT_DATE), '08:00:00', '17:00:00'),
-(7, DATEADD('MONTH', -1, CURRENT_DATE), '09:00:00', '18:00:00'),
-(8, DATEADD('MONTH', -1, CURRENT_DATE), '08:30:00', '17:30:00'),
-(10, DATEADD('MONTH', -1, CURRENT_DATE), '09:00:00', '18:00:00'),
--- Día -32 (mes anterior)
-(1, DATEADD('DAY', -32, CURRENT_DATE), '08:00:00', '17:00:00'),
-(2, DATEADD('DAY', -32, CURRENT_DATE), '08:00:00', '18:00:00'),
-(3, DATEADD('DAY', -32, CURRENT_DATE), '09:00:00', '18:00:00'),
-(4, DATEADD('DAY', -32, CURRENT_DATE), '08:30:00', '17:30:00'),
-(5, DATEADD('DAY', -32, CURRENT_DATE), '09:00:00', '18:00:00'),
-(7, DATEADD('DAY', -32, CURRENT_DATE), '09:00:00', '18:00:00'),
-(8, DATEADD('DAY', -32, CURRENT_DATE), '08:30:00', '17:30:00'),
-(9, DATEADD('DAY', -32, CURRENT_DATE), '08:00:00', '17:00:00');
+-- Registros ordenados por fecha (más antiguo primero)
+(3, DATEADD('DAY', -4, CURRENT_DATE), '09:01:00', '18:03:00'),
+(4, DATEADD('DAY', -3, CURRENT_DATE), '08:35:00', '17:30:00'),
+(3, DATEADD('DAY', -3, CURRENT_DATE), '09:03:00', '18:00:00'),
+(4, DATEADD('DAY', -2, CURRENT_DATE), '08:28:00', '17:32:00'),
+(3, DATEADD('DAY', -2, CURRENT_DATE), '08:58:00', '18:02:00'),
+(4, DATEADD('DAY', -1, CURRENT_DATE), '08:30:00', '17:35:00'),
+(3, DATEADD('DAY', -1, CURRENT_DATE), '09:00:00', '18:05:00');

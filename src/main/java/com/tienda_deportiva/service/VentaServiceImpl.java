@@ -36,13 +36,18 @@ public class VentaServiceImpl implements VentaService {
     }
 
     @Override
-    public void guardar(Venta venta) {
-        ventaRepository.guardar(venta);
+    public Long guardar(Venta venta) {
+        return ventaRepository.guardar(venta);
     }
 
     @Override
     public void guardarDetalle(DetalleVenta detalle) {
         ventaRepository.guardarDetalle(detalle);
+    }
+    
+    @Override
+    public Long guardarCliente(String nombre, String dni) {
+        return ventaRepository.guardarCliente(nombre, dni);
     }
 
     @Override

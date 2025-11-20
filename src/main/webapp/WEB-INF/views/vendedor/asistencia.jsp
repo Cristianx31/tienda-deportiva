@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,65 +13,154 @@
 </head>
 <body>
   <div class="container my-5">
-    <div class="card shadow-lg mx-auto" style="max-width: 480px;">
+    <div class="card shadow-lg mx-auto" style="max-width: 600px;">
       <div class="card-header text-center bg-dark text-white rounded-top">
         <h3 class="mb-0"><i class="bi bi-fingerprint me-2"></i>Registro de Asistencia</h3>
       </div>
-      <div class="card-body text-center">
-        <hr>
-        <!-- Fecha y Hora -->
-        <div class="mb-2">
-          <span class="fw-bold"><i class="bi bi-calendar-event me-1"></i>Lunes, 15 de Noviembre de 2023</span>
-        </div>
-        <div class="mb-3">
-          <span class="fs-5 text-primary"><i class="bi bi-clock-history me-1"></i>08:15:32 AM</span>
-        </div>
-        <!-- Botones -->
-        <div class="d-flex justify-content-center gap-2 mb-3">
-          <button class="btn btn-success">
-            <i class="bi bi-box-arrow-in-right me-1"></i>Ingreso
-          </button>
-          <button class="btn btn-secondary" disabled>
-            <i class="bi bi-box-arrow-right me-1"></i>Salida
-          </button>
-        </div>
-        <!-- Estado -->
-        <div class="alert alert-warning text-center py-2 mb-3">
-          <i class="bi bi-info-circle me-1"></i><strong>Estado:</strong> Esperando registro de ingreso
-        </div>
-        <!-- Historial -->
-        <h5 class="mb-2"><i class="bi bi-clock-history me-2"></i>Registros de Hoy</h5>
-        <div class="d-flex justify-content-between align-items-center mb-2 px-2 py-1 border rounded">
-          <div>
-            <i class="bi bi-box-arrow-in-right text-success me-2"></i>
-            <span>Ingreso:</span>
+      <div class="card-body">
+        <!-- Alertas -->
+        <c:if test="${not empty success}">
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>${success}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
           </div>
-          <div>
-            <span class="me-2">--:--:--</span>
-            <span class="badge bg-secondary">Pendiente</span>
+        </c:if>
+        <c:if test="${not empty error}">
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-circle me-2"></i>${error}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        </c:if>
+        <c:if test="${not empty warning}">
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>${warning}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        </c:if>
+
+        <!-- Fecha y Hora actual -->
+        <div class="text-center mb-3">
+          <div class="mb-2">
+            <span class="fw-bold fs-5"><i class="bi bi-calendar-event me-1"></i>
+              <fmt:formatDate value="<%= new java.util.Date() %>" pattern="EEEE, dd 'de' MMMM 'de' yyyy" />
+            </span>
+          </div>
+          <div class="mb-3">
+            <span class="fs-4 text-primary" id="reloj"><i class="bi bi-clock-history me-1"></i>--:--:--</span>
           </div>
         </div>
-        <div class="d-flex justify-content-between align-items-center mb-2 px-2 py-1 border rounded">
-          <div>
-            <i class="bi bi-box-arrow-right text-danger me-2"></i>
-            <span>Salida:</span>
+
+        <!-- Botones de Registro -->
+        <div class="d-flex justify-content-center gap-3 mb-4">
+          <form method="post" action="${pageContext.request.contextPath}/vendedor/marcar-entrada">
+            <button type="submit" class="btn btn-success btn-lg" 
+                    ${asistenciaHoy != null ? 'disabled' : ''}>
+              <i class="bi bi-box-arrow-in-right me-2"></i>Marcar Entrada
+            </button>
+          </form>
+          <form method="post" action="${pageContext.request.contextPath}/vendedor/marcar-salida">
+            <button type="submit" class="btn btn-danger btn-lg" 
+                    ${asistenciaHoy == null || asistenciaHoy.horaSalida != null ? 'disabled' : ''}>
+              <i class="bi bi-box-arrow-right me-2"></i>Marcar Salida
+            </button>
+          </form>
+        </div>
+
+        <!-- Estado del día -->
+        <div class="text-center mb-4">
+          <c:choose>
+            <c:when test="${asistenciaHoy == null}">
+              <div class="alert alert-warning py-2">
+                <i class="bi bi-info-circle me-1"></i><strong>Estado:</strong> No has marcado entrada
+              </div>
+            </c:when>
+            <c:when test="${asistenciaHoy.horaSalida == null}">
+              <div class="alert alert-info py-2">
+                <i class="bi bi-check-circle me-1"></i><strong>Estado:</strong> En turno (pendiente salida)
+              </div>
+            </c:when>
+            <c:otherwise>
+              <div class="alert alert-success py-2">
+                <i class="bi bi-check-circle-fill me-1"></i><strong>Estado:</strong> Jornada completada
+              </div>
+            </c:otherwise>
+          </c:choose>
+        </div>
+
+        <!-- Registro de Hoy -->
+        <h5 class="mb-3 text-center"><i class="bi bi-calendar-check me-2"></i>Registro de Hoy</h5>
+        <div class="row g-2 mb-4">
+          <div class="col-6">
+            <div class="card border-success">
+              <div class="card-body text-center py-2">
+                <div class="text-success mb-1">
+                  <i class="bi bi-box-arrow-in-right fs-4"></i>
+                </div>
+                <small class="text-muted d-block">Entrada</small>
+                <strong class="fs-5">
+                  <c:choose>
+                    <c:when test="${asistenciaHoy != null}">
+                      <fmt:formatDate value="${asistenciaHoy.horaIngresoAsDate}" pattern="HH:mm:ss" type="time"/>
+                    </c:when>
+                    <c:otherwise>--:--:--</c:otherwise>
+                  </c:choose>
+                </strong>
+              </div>
+            </div>
           </div>
-          <div>
-            <span class="me-2">--:--:--</span>
-            <span class="badge bg-secondary">Pendiente</span>
+          <div class="col-6">
+            <div class="card border-danger">
+              <div class="card-body text-center py-2">
+                <div class="text-danger mb-1">
+                  <i class="bi bi-box-arrow-right fs-4"></i>
+                </div>
+                <small class="text-muted d-block">Salida</small>
+                <strong class="fs-5">
+                  <c:choose>
+                    <c:when test="${asistenciaHoy != null && asistenciaHoy.horaSalida != null}">
+                      <fmt:formatDate value="${asistenciaHoy.horaSalidaAsDate}" pattern="HH:mm:ss" type="time"/>
+                    </c:when>
+                    <c:otherwise>--:--:--</c:otherwise>
+                  </c:choose>
+                </strong>
+              </div>
+            </div>
           </div>
         </div>
+
+        <!-- Botón Ver Historial -->
+        <div class="text-center mb-3">
+          <a href="${pageContext.request.contextPath}/vendedor/historial-asistencia" class="btn btn-primary">
+            <i class="bi bi-calendar-range me-1"></i>Historial
+          </a>
+        </div>
+
         <!-- Navegación -->
         <div class="d-flex justify-content-between mt-4">
-          <a href="${pageContext.request.contextPath}/vendedor/perfil" class="btn btn-outline-secondary btn-sm">
-            <i class="bi bi-arrow-left me-1"></i>Volver
+          <a href="${pageContext.request.contextPath}/vendedor/perfil" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>Volver a Perfil
           </a>
-          <a href="${pageContext.request.contextPath}/vendedor/catalogo" class="btn btn-primary btn-sm">
-            Continuar <i class="bi bi-arrow-right ms-1"></i>
+          <a href="${pageContext.request.contextPath}/vendedor/catalogo" class="btn btn-primary">
+            Ir a Catálogo <i class="bi bi-arrow-right ms-1"></i>
           </a>
         </div>
       </div>
     </div>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Reloj en tiempo real
+    function actualizarReloj() {
+      const ahora = new Date();
+      const horas = String(ahora.getHours()).padStart(2, '0');
+      const minutos = String(ahora.getMinutes()).padStart(2, '0');
+      const segundos = String(ahora.getSeconds()).padStart(2, '0');
+      document.getElementById('reloj').innerHTML = 
+        '<i class="bi bi-clock-history me-1"></i>' + horas + ':' + minutos + ':' + segundos;
+    }
+    setInterval(actualizarReloj, 1000);
+    actualizarReloj();
+  </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-# 🏆 Tienda Deportiva - Sistema de Gestión
+# 🏆 Tienda Deportiva - Sistema de Registro de Venta + Marcación de asistencia
 
 Sistema de gestión completo para tienda deportiva desarrollado con **Spring Boot 3.3.0** y **JSP**.
 

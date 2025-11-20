@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -27,28 +28,33 @@
           </span>
         </div>
         <!-- Nombre y badge centrados -->
-        <h5 class="mb-1 fw-bold text-primary">Admin Principal</h5>
-        <span class="badge bg-danger mb-3 mx-auto" style="display:inline-block;">Administrador</span>
+        <h5 class="mb-1 fw-bold text-primary">${usuario.nombre_completo}</h5>
+        <span class="badge bg-danger mb-3 mx-auto" style="display:inline-block;">${usuario.cargo}</span>
         <hr>
         <!-- Datos personales -->
         <div class="text-start mb-2">
           <i class="bi bi-envelope"></i>
           <span class="ms-1 fw-bold">Correo:</span>
-          <span>admin@deportesx.com</span>
+          <span>${usuario.correo}</span>
         </div>
         <div class="text-start mb-2">
           <i class="bi bi-person-badge"></i>
           <span class="ms-1 fw-bold">Usuario:</span>
-          <span>admin</span>
+          <span>${usuario.usuario}</span>
         </div>
         <div class="text-start mb-2">
           <i class="bi bi-shield-lock"></i>
           <span class="ms-1 fw-bold">Nivel de acceso:</span>
-          <span>Administrador General</span>
+          <span>
+            <c:choose>
+              <c:when test="${usuario.cargo == 'Administrador'}">Administrador General</c:when>
+              <c:otherwise>Vendedor</c:otherwise>
+            </c:choose>
+          </span>
         </div>
         <hr>
         <!-- Botón cerrar sesión -->
-        <a href="${pageContext.request.contextPath}/login" class="btn btn-outline-danger w-100">
+        <a href="${pageContext.request.contextPath}/logout" class="btn btn-outline-danger w-100">
           Cerrar Sesión
         </a>
       </div>

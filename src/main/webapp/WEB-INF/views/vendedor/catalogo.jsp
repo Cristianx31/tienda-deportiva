@@ -66,11 +66,14 @@
                     <p class="card-text">${producto.descripcion}</p>
                     <p class="fw-bold">S/ ${producto.precio}</p>
                     <div class="d-flex justify-content-between">
-                      <a href="#" class="btn btn-success btn-sm btn-add-cart"
-                         data-id="${producto.idProducto}"
-                         data-name="${producto.nombre}"
-                         data-price="${producto.precio}"
-                         data-image="${producto.imagen}">Agregar al carrito</a>
+                      <form action="${pageContext.request.contextPath}/vendedor/carrito/agregar" method="POST" style="display:inline;">
+                        <input type="hidden" name="idProducto" value="${producto.idProducto}">
+                        <input type="hidden" name="nombre" value="${producto.nombre}">
+                        <input type="hidden" name="precio" value="${producto.precio}">
+                        <input type="hidden" name="imagen" value="${producto.imagen}">
+                        <input type="hidden" name="cantidad" value="1">
+                        <button type="submit" class="btn btn-success btn-sm">Agregar al carrito</button>
+                      </form>
                       <a href="${pageContext.request.contextPath}/vendedor/producto-detalle/${producto.idProducto}" class="btn btn-outline-primary btn-sm">Ver detalles</a>
                     </div>
                   </div>

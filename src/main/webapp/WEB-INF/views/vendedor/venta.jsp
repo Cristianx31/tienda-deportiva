@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -47,139 +49,79 @@
       <h4><i class="bi bi-cart-plus"></i> Registro de Venta</h4>
     </div>
     <div class="card-body">
-      <form>
+      <form method="POST" action="${pageContext.request.contextPath}/vendedor/venta/confirmar">
         <!-- Datos del cliente -->
         <h5><i class="bi bi-person"></i> Datos del Cliente</h5>
         <div class="row">
           <div class="col-md-6 mb-2 mb-md-0">
             <label for="nombreCliente" class="form-label">Nombre del Cliente</label>
-            <input type="text" id="nombreCliente" class="form-control" placeholder="Ej. Jazmin Garcia" autocomplete="name" required>
-            <div class="invalid-feedback">Ingresa un nombre válido (mínimo 3 letras).</div>
+            <input type="text" id="nombreCliente" name="nombreCliente" class="form-control" placeholder="Ej. Jazmin Garcia" required>
           </div>
           <div class="col-md-6">
             <label for="dniCliente" class="form-label">DNI</label>
-            <input type="text" id="dniCliente" class="form-control" placeholder="Ej. 74123594" inputmode="numeric" maxlength="8" required>
-            <div class="invalid-feedback">El DNI debe tener 8 dígitos numéricos.</div>
+            <input type="text" id="dniCliente" name="dniCliente" class="form-control" placeholder="Ej. 74123594" maxlength="8" required>
           </div>
         </div>
 
         <!-- Productos seleccionados (dinámico) -->
-        <h5 class="mb-3"><i class="bi bi-box-seam"></i> Productos seleccionados</h5>
-        <div id="cart-list" class="row g-4 mb-3"></div>
+        <h5 class="mb-3 mt-4"><i class="bi bi-box-seam"></i> Productos seleccionados</h5>
+        
+        <c:choose>
+          <c:when test="${empty carrito}">
+            <div class="alert alert-info">Tu carrito está vacío. 
+              <a href="${pageContext.request.contextPath}/vendedor/catalogo">Ir al catálogo</a>
+            </div>
+          </c:when>
+          <c:otherwise>
+            <div class="row g-4 mb-3">
+              <c:forEach var="item" items="${carrito}">
+                <div class="col-12 col-md-6">
+                  <div class="position-relative p-4 rounded shadow-sm border d-flex gap-3 align-items-center">
+                    <img src="${item.imagen}" alt="" style="width:72px;height:72px;object-fit:contain"/>
+                    <div class="flex-grow-1">
+                      <div class="fw-bold text-primary">${item.nombre}</div>
+                      <div class="text-dark">Precio Unitario: <span class="text-secondary fw-bold">S/ ${item.precio}</span></div>
+                      <div class="text-dark">
+                        Cantidad: 
+                        <form method="POST" action="${pageContext.request.contextPath}/vendedor/carrito/actualizar" style="display:inline;">
+                          <input type="hidden" name="idProducto" value="${item.idProducto}">
+                          <input type="number" name="cantidad" value="${item.cantidad}" min="1" class="form-control w-auto d-inline-block" style="width:60px;" onchange="this.form.submit()">
+                        </form>
+                      </div>
+                      <div class="text-dark">Subtotal: <span class="text-secondary fw-bold">S/ <fmt:formatNumber value="${item.precio * item.cantidad}" type="number" minFractionDigits="2" maxFractionDigits="2"/></span></div>
+                    </div>
+                    <a href="${pageContext.request.contextPath}/vendedor/carrito/eliminar/${item.idProducto}" class="btn btn-sm btn-outline-danger position-absolute top-0 end-0 m-2" onclick="return confirm('¿Eliminar este producto?');">
+                      <i class="bi bi-trash"></i>
+                    </a>
+                  </div>
+                </div>
+              </c:forEach>
+            </div>
 
-        <!-- Total general -->
-        <div class="text-end mb-4">
-          <p class="fw-bold fs-5 mb-0">Total a pagar: <span id="cart-total" class="text-secondary">S/ 0.00</span></p>
-        </div>
+            <!-- Total general -->
+            <div class="text-end mb-4">
+              <p class="fw-bold fs-5 mb-0">Total a pagar: <span class="text-secondary">S/ <fmt:formatNumber value="${total}" type="number" minFractionDigits="2" maxFractionDigits="2"/></span></p>
+            </div>
 
-        <!-- Botones -->
-        <div class="d-flex justify-content-center gap-3">
-          <a href="${pageContext.request.contextPath}/vendedor/venta-detalle" id="btnConfirmar" class="btn btn-success">
-            <i class="bi bi-check-circle"></i> Confirmar Venta
-          </a>
-          <a href="${pageContext.request.contextPath}/vendedor/catalogo" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left"></i> Volver al Catálogo
-          </a>
-        </div>
+            <!-- Botones -->
+            <div class="d-flex justify-content-center gap-3">
+              <button type="submit" class="btn btn-success">
+                <i class="bi bi-check-circle"></i> Confirmar Venta
+              </button>
+              <a href="${pageContext.request.contextPath}/vendedor/catalogo" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Volver al Catálogo
+              </a>
+              <a href="${pageContext.request.contextPath}/vendedor/carrito/limpiar" class="btn btn-outline-danger" onclick="return confirm('¿Limpiar el carrito?');">
+                <i class="bi bi-trash"></i> Limpiar Carrito
+              </a>
+            </div>
+          </c:otherwise>
+        </c:choose>
+
       </form>
     </div>
   </div>
-  <script src="${pageContext.request.contextPath}/assets/js/cart.js"></script>
-  <script>
-    (function(){
-      const list = document.getElementById('cart-list');
-      const totalEl = document.getElementById('cart-total');
-
-      function render(){
-        const items = Cart.getCart();
-        list.innerHTML = '';
-        if(items.length === 0){
-          list.innerHTML = '<div class="col-12"><div class="alert alert-info">Tu carrito está vacío.</div></div>';
-        }
-        items.forEach(function(i){
-          const col = document.createElement('div');
-          col.className = 'col-12 col-md-6';
-          col.innerHTML =
-            '<div class="position-relative p-4 rounded shadow-sm border d-flex gap-3 align-items-center">' +
-              '<img src="' + (i.image || '') + '" alt="" style="width:72px;height:72px;object-fit:contain"/>' +
-              '<div class="flex-grow-1">' +
-                '<div class="fw-bold text-primary">' + i.name + '</div>' +
-                '<div class="text-dark">Precio Unitario: <span class="text-secondary fw-bold">S/ ' + Cart.formatCurrency(i.price) + '</span></div>' +
-                '<div class="text-dark">Cantidad: <input data-id="' + i.id + '" type="number" class="form-control w-auto d-inline-block cart-qty" min="1" value="' + (i.qty||1) + '"></div>' +
-                '<div class="text-dark">Subtotal: <span class="text-secondary fw-bold">S/ ' + Cart.formatCurrency(i.price * (i.qty||1)) + '</span></div>' +
-              '</div>' +
-              '<button data-id="' + i.id + '" class="btn btn-sm btn-outline-danger btn-remove position-absolute top-0 end-0 m-2"><i class="bi bi-trash"></i></button>' +
-            '</div>';
-          list.appendChild(col);
-        });
-        totalEl.textContent = 'S/ ' + Cart.formatCurrency(Cart.total());
-      }
-
-      // Events
-      list.addEventListener('change', function(e){
-        if(e.target.classList.contains('cart-qty')){
-          Cart.updateQty(e.target.dataset.id, e.target.value);
-          render();
-        }
-      });
-      list.addEventListener('click', function(e){
-        const btn = e.target.closest('.btn-remove');
-        if(btn){
-          const id = btn.dataset.id;
-          Cart.removeItem(id);
-          render();
-        }
-      });
-
-      document.getElementById('btnConfirmar').addEventListener('click', function(e){
-        // Validaciones simples
-        const name = document.getElementById('nombreCliente');
-        const dni = document.getElementById('dniCliente');
-        const items = Cart.getCart();
-        let ok = true;
-
-        // Nombre: mínimo 3 letras (solo letras y espacios)
-        const nameOk = /^[A-Za-zÁÉÍÓÚÑáéíóúñ ]{3,}$/.test(name.value.trim());
-        name.classList.toggle('is-invalid', !nameOk);
-        if(!nameOk) ok = false;
-
-        // DNI: 8 dígitos
-        const dniOk = /^\d{8}$/.test(dni.value.trim());
-        dni.classList.toggle('is-invalid', !dniOk);
-        if(!dniOk) ok = false;
-
-        // Carrito no vacío
-        if(items.length === 0){
-          alert('Tu carrito está vacío. Agrega productos antes de confirmar.');
-          ok = false;
-        }
-
-        if(!ok){
-          e.preventDefault();
-          return;
-        }
-
-        // Guardar la venta en sessionStorage para mostrar en detalle
-        const lastSale = {
-          id: Date.now(),
-          date: new Date().toISOString().slice(0,10),
-          client: name.value.trim(),
-          dni: dni.value.trim(),
-          items: items,
-          total: Cart.total()
-        };
-        sessionStorage.setItem('lastSale', JSON.stringify(lastSale));
-        // Agregar al historial de ventas (sales)
-        try {
-          const history = JSON.parse(sessionStorage.getItem('sales') || '[]');
-          history.push(lastSale);
-          sessionStorage.setItem('sales', JSON.stringify(history));
-        } catch(_) {}
-        Cart.clear();
-      });
-
-      render();
-    })();
-  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

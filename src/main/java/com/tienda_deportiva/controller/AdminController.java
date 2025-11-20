@@ -6,6 +6,7 @@ import com.tienda_deportiva.service.CategoriaService;
 import com.tienda_deportiva.service.ProductoService;
 import com.tienda_deportiva.service.VentaService;
 import com.tienda_deportiva.service.AsistenciaService;
+import com.tienda_deportiva.service.SecurityService;
 import com.tienda_deportiva.model.Venta;
 import com.tienda_deportiva.model.DetalleVenta;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -36,8 +37,14 @@ public class AdminController {
     @Autowired
     private AsistenciaService asistenciaService;
 
+    @Autowired
+    private SecurityService securityService;
+
     @GetMapping("/gestion")
-    public String gestion(Model model, @RequestParam(defaultValue = "productos") String tab) {
+    public String gestion(HttpSession session, Model model, RedirectAttributes redirectAttributes, @RequestParam(defaultValue = "productos") String tab) {
+        String validacion = securityService.validarAdmin(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
         model.addAttribute("empleados", usuarioService.listarTodos());
         model.addAttribute("categorias", categoriaService.listarTodas());
         model.addAttribute("productos", productoService.listarTodos());
@@ -47,40 +54,50 @@ public class AdminController {
         return "admin/gestion";
     }
 
-    // Mostrar formulario de creación de empleado
     @GetMapping("/empleado-crear")
-    public String mostrarFormularioCrear(Model model) {
+    public String mostrarFormularioCrear(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarAdmin(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
         model.addAttribute("empleado", new Usuario());
         return "admin/empleado-crear";
     }
 
-    // Guardar nuevo empleado
     @PostMapping("/empleado-crear")
-    public String crearEmpleado(@ModelAttribute Usuario usuario) {
+    public String crearEmpleado(HttpSession session, @ModelAttribute Usuario usuario, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarAdmin(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
         usuario.setEstado(true);
         usuarioService.crearUsuario(usuario);
         return "redirect:/admin/gestion?tab=empleados";
     }
 
-    // Mostrar formulario de edición de empleado
     @GetMapping("/empleado-editar/{id}")
-    public String mostrarFormularioEditar(@PathVariable Integer id, Model model) {
+    public String mostrarFormularioEditar(HttpSession session, @PathVariable Integer id, Model model, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarAdmin(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
         model.addAttribute("empleado", usuarioService.buscarPorId(id));
         return "admin/empleado-editar";
     }
 
-    // Guardar cambios de edición de empleado
     @PostMapping("/empleado-editar")
-    public String editarEmpleado(@ModelAttribute Usuario usuario, 
-                                 @RequestParam String estado) {
+    public String editarEmpleado(HttpSession session, @ModelAttribute Usuario usuario, 
+                                 @RequestParam String estado, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarAdmin(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
         usuario.setEstado(Boolean.valueOf(estado));
         usuarioService.actualizar(usuario);
         return "redirect:/admin/gestion?tab=empleados";
     }
 
-    // Eliminar empleado
     @GetMapping("/empleado-eliminar/{id}")
-    public String eliminarEmpleado(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+    public String eliminarEmpleado(HttpSession session, @PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarAdmin(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
         if (usuarioService.tieneVentasOAsistencias(id)) {
             redirectAttributes.addFlashAttribute("errorEmpleado", 
                 "No se puede eliminar el empleado porque tiene ventas o asistencias registradas.");
@@ -93,12 +110,21 @@ public class AdminController {
     }
 
     @GetMapping("/perfil-admin")
-    public String perfilAdmin() {
+    public String perfilAdmin(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarAdmin(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
+        Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
+        model.addAttribute("usuario", usuarioActual);
+        
         return "admin/perfil-admin";
     }
 
     @GetMapping("/venta-detalle/{id}")
-    public String ventaDetalle(@PathVariable Long id, Model model) {
+    public String ventaDetalle(HttpSession session, @PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarAdmin(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
         Venta venta = ventaService.buscarPorId(id);
         List<DetalleVenta> detalles = ventaService.buscarDetallesPorVenta(id);
         
@@ -109,13 +135,19 @@ public class AdminController {
     }
 
     @GetMapping("/venta-anular/{id}")
-    public String anularVenta(@PathVariable Long id) {
+    public String anularVenta(HttpSession session, @PathVariable Long id, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarAdmin(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
         ventaService.anularVenta(id);
         return "redirect:/admin/gestion";
     }
 
     @GetMapping("/metricas")
-    public String metricas(Model model) {
+    public String metricas(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarAdmin(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
         Map<String, Object> metricas = ventaService.obtenerMetricasGenerales();
         model.addAttribute("totalVentas", metricas.get("total_ventas"));
         model.addAttribute("ingresosTotales", metricas.get("ingresos_totales"));

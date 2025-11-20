@@ -4,10 +4,12 @@ import com.tienda_deportiva.service.ProductoService;
 import com.tienda_deportiva.service.CategoriaService;
 import com.tienda_deportiva.service.VentaService;
 import com.tienda_deportiva.service.AsistenciaService;
+import com.tienda_deportiva.service.SecurityService;
 import com.tienda_deportiva.model.Venta;
 import com.tienda_deportiva.model.DetalleVenta;
 import com.tienda_deportiva.model.Asistencia;
 import com.tienda_deportiva.model.Usuario;
+import com.tienda_deportiva.model.CarritoItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,12 +17,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpSession;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/vendedor")
@@ -37,12 +41,17 @@ public class VendedorController {
 
     @Autowired
     private AsistenciaService asistenciaService;
+
+    @Autowired
+    private SecurityService securityService;
     
     @GetMapping("/index")
-    public String index(HttpSession session, Model model) {
+    public String index(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarVendedor(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
         Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
         if (usuarioActual != null) {
-            // Obtener asistencia de hoy
             List<Asistencia> asistenciasHoy = asistenciaService.buscarPorIdUsuario(usuarioActual.getId_usuario());
             Asistencia asistenciaHoy = null;
             
@@ -59,45 +68,76 @@ public class VendedorController {
     }
 
     @GetMapping("/perfil")
-    public String perfilVendedor() {
+    public String perfilVendedor(HttpSession session, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarVendedor(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
         return "vendedor/perfil-vendedor";
     }
     
     @GetMapping("/catalogo")
-    public String catalogo(Model model) {
+    public String catalogo(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarVendedor(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
         model.addAttribute("productos", productoService.listarTodos());
         model.addAttribute("categorias", categoriaService.listarTodas());
         return "vendedor/catalogo";
     }
     
     @GetMapping("/publicidad")
-    public String publicidad() {
+    public String publicidad(HttpSession session, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarVendedor(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
         return "vendedor/publicidad";
     }
     
     @GetMapping("/contacto")
-    public String contacto() {
+    public String contacto(HttpSession session, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarVendedor(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
         return "vendedor/contacto";
     }
     
     @GetMapping("/producto-detalle/{id}")
-    public String productoDetalle(@PathVariable Long id, Model model) {
+    public String productoDetalle(@PathVariable Long id, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarVendedor(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
         model.addAttribute("producto", productoService.buscarPorId(id));
         return "vendedor/producto-detalle";
     }
 
     @GetMapping("/venta")
-    public String venta() {
+    public String venta(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarVendedor(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
+        List<CarritoItem> carrito = obtenerCarrito(session);
+        double total = carrito.stream()
+                .mapToDouble(i -> i.getPrecio() * i.getCantidad())
+                .sum();
+        
+        model.addAttribute("carrito", carrito);
+        model.addAttribute("total", total);
         return "vendedor/venta";
     }
 
     @GetMapping("/venta-detalle")
-    public String ventaDetalleTemp() {
+    public String ventaDetalleTemp(HttpSession session, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarVendedor(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
         return "vendedor/venta-detalle";
     }
 
     @GetMapping("/venta-detalle/{id}")
-    public String ventaDetalle(@PathVariable Long id, Model model) {
+    public String ventaDetalle(@PathVariable Long id, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarVendedor(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
         Venta venta = ventaService.buscarPorId(id);
         List<DetalleVenta> detalles = ventaService.buscarDetallesPorVenta(id);
         
@@ -108,29 +148,32 @@ public class VendedorController {
     }
 
     @GetMapping("/ventas-empleado")
-    public String ventasEmpleado(Model model) {
-        Long idUsuarioLogueado = 2L;
-        List<Venta> ventasEmpleado = ventaService.listarPorUsuario(idUsuarioLogueado);
+    public String ventasEmpleado(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarVendedor(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
+        Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
+        List<Venta> ventasEmpleado = ventaService.listarPorUsuario(usuarioActual.getId_usuario().longValue());
         model.addAttribute("ventas", ventasEmpleado);
         return "vendedor/ventas-empleado";
     }
 
     @GetMapping("/ventas")
-    public String ventas(Model model) {
+    public String ventas(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarVendedor(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
         model.addAttribute("ventas", ventaService.listarTodas());
         return "vendedor/ventas";
     }
 
-    // MARCAJE DE ASISTENCIA
     @PostMapping("/marcar-entrada")
     public String marcarEntrada(HttpSession session, RedirectAttributes redirectAttributes) {
-        Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
+        String validacion = securityService.validarVendedor(session, redirectAttributes);
+        if (validacion != null) return validacion;
         
-        if (usuarioActual == null) {
-            return "redirect:/login";
-        }
+        Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
 
-        // Verificar si ya marcó entrada hoy
         List<Asistencia> asistenciasHoy = asistenciaService.buscarPorIdUsuario(usuarioActual.getId_usuario());
         boolean yaMarcoHoy = asistenciasHoy.stream()
                 .anyMatch(a -> a.getFecha().equals(LocalDate.now()));
@@ -151,13 +194,11 @@ public class VendedorController {
 
     @PostMapping("/marcar-salida")
     public String marcarSalida(HttpSession session, RedirectAttributes redirectAttributes) {
-        Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
+        String validacion = securityService.validarVendedor(session, redirectAttributes);
+        if (validacion != null) return validacion;
         
-        if (usuarioActual == null) {
-            return "redirect:/login";
-        }
+        Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
 
-        // Obtener asistencia de hoy
         List<Asistencia> asistenciasHoy = asistenciaService.buscarPorIdUsuario(usuarioActual.getId_usuario());
         Asistencia asistenciaHoy = null;
         
@@ -182,7 +223,10 @@ public class VendedorController {
     }
 
     @GetMapping("/asistencia")
-    public String asistencia(HttpSession session, Model model) {
+    public String asistencia(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+        String validacion = securityService.validarVendedor(session, redirectAttributes);
+        if (validacion != null) return validacion;
+        
         Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
         
         if (usuarioActual != null) {
@@ -191,5 +235,144 @@ public class VendedorController {
         }
         
         return "vendedor/asistencia";
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<CarritoItem> obtenerCarrito(HttpSession session) {
+        List<CarritoItem> carrito = (List<CarritoItem>) session.getAttribute("carrito");
+        if (carrito == null) {
+            carrito = new ArrayList<>();
+            session.setAttribute("carrito", carrito);
+        }
+        return carrito;
+    }
+
+    @PostMapping("/carrito/agregar")
+    public String agregarAlCarrito(
+            HttpSession session,
+            @RequestParam Long idProducto,
+            @RequestParam String nombre,
+            @RequestParam Double precio,
+            @RequestParam String imagen,
+            @RequestParam(defaultValue = "1") Integer cantidad) {
+        
+        List<CarritoItem> carrito = obtenerCarrito(session);
+        
+        CarritoItem existente = carrito.stream()
+                .filter(i -> i.getIdProducto().equals(idProducto))
+                .findFirst()
+                .orElse(null);
+        
+        if (existente != null) {
+            existente.setCantidad(existente.getCantidad() + cantidad);
+        } else {
+            carrito.add(new CarritoItem(idProducto, nombre, precio, imagen, cantidad));
+        }
+        
+        return "redirect:/vendedor/venta";
+    }
+
+    @PostMapping("/carrito/actualizar")
+    public String actualizarCantidad(
+            HttpSession session,
+            @RequestParam Long idProducto,
+            @RequestParam Integer cantidad) {
+        
+        List<CarritoItem> carrito = obtenerCarrito(session);
+        
+        CarritoItem item = carrito.stream()
+                .filter(i -> i.getIdProducto().equals(idProducto))
+                .findFirst()
+                .orElse(null);
+        
+        if (item != null && cantidad > 0) {
+            item.setCantidad(cantidad);
+        }
+        
+        return "redirect:/vendedor/venta";
+    }
+
+    @GetMapping("/carrito/eliminar/{id}")
+    public String eliminarDelCarrito(
+            HttpSession session,
+            @PathVariable Long id) {
+        
+        List<CarritoItem> carrito = obtenerCarrito(session);
+        carrito.removeIf(i -> i.getIdProducto().equals(id));
+        
+        return "redirect:/vendedor/venta";
+    }
+
+    @GetMapping("/carrito/limpiar")
+    public String limpiarCarrito(HttpSession session) {
+        session.removeAttribute("carrito");
+        return "redirect:/vendedor/venta";
+    }
+
+    @PostMapping("/venta/confirmar")
+    public String confirmarVenta(
+            HttpSession session,
+            @RequestParam String nombreCliente,
+            @RequestParam String dniCliente,
+            RedirectAttributes redirectAttributes) {
+        
+        String validacion = securityService.validarVendedor(session, redirectAttributes);
+        if (validacion != null) return validacion;
+
+        List<CarritoItem> carrito = obtenerCarrito(session);
+        
+        if (carrito.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "El carrito está vacío");
+            return "redirect:/vendedor/venta";
+        }
+        
+        if (nombreCliente == null || nombreCliente.trim().isEmpty() || nombreCliente.length() < 3) {
+            redirectAttributes.addFlashAttribute("error", "Nombre de cliente inválido");
+            return "redirect:/vendedor/venta";
+        }
+        
+        if (dniCliente == null || !dniCliente.matches("\\d{8}")) {
+            redirectAttributes.addFlashAttribute("error", "DNI debe tener 8 dígitos");
+            return "redirect:/vendedor/venta";
+        }
+        
+        try {
+            Venta venta = new Venta();
+            venta.setNombreCliente(nombreCliente);
+            venta.setDniCliente(dniCliente);
+            venta.setFecha(LocalDate.now());
+            venta.setTotal(carrito.stream()
+                    .mapToDouble(i -> i.getPrecio() * i.getCantidad())
+                    .sum());
+            venta.setEstado("Completada");
+            
+            Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
+            if (usuarioActual != null) {
+                venta.setIdUsuario(usuarioActual.getId_usuario().longValue());
+            }
+            
+            ventaService.guardar(venta);
+            
+            Venta ventaGuardada = ventaService.buscarPorId(venta.getIdVenta());
+            
+            for (CarritoItem item : carrito) {
+                DetalleVenta detalle = new DetalleVenta();
+                detalle.setIdVenta(ventaGuardada.getIdVenta());
+                detalle.setIdProducto(item.getIdProducto());
+                detalle.setCantidad(item.getCantidad());
+                detalle.setPrecioUnitario(item.getPrecio());
+                detalle.setSubtotal(item.getPrecio() * item.getCantidad());
+                ventaService.guardarDetalle(detalle);
+            }
+            
+            session.removeAttribute("carrito");
+            
+            redirectAttributes.addFlashAttribute("success", "¡Venta registrada exitosamente! ID: " + ventaGuardada.getIdVenta());
+            return "redirect:/vendedor/venta-detalle/" + ventaGuardada.getIdVenta();
+            
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al guardar la venta: " + e.getMessage());
+            return "redirect:/vendedor/venta";
+        }
     }
 }

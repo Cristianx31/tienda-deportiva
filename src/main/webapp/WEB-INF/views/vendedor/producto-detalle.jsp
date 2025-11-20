@@ -35,9 +35,16 @@
             <p class="fs-5 fw-bold text-success mb-4">Precio: S/ ${producto.precio}</p>
 
             <div class="d-flex flex-wrap gap-3">
-              <a href="#" id="btnAddToCart" class="btn btn-success">
-                <i class="bi bi-cart-plus"></i> Agregar al carrito
-              </a>
+              <form action="${pageContext.request.contextPath}/vendedor/carrito/agregar" method="POST">
+                <input type="hidden" name="idProducto" value="${producto.idProducto}">
+                <input type="hidden" name="nombre" value="${producto.nombre}">
+                <input type="hidden" name="precio" value="${producto.precio}">
+                <input type="hidden" name="imagen" value="${producto.imagen}">
+                <input type="hidden" name="cantidad" value="1">
+                <button type="submit" class="btn btn-success">
+                  <i class="bi bi-cart-plus"></i> Agregar al carrito
+                </button>
+              </form>
               <a href="${pageContext.request.contextPath}/vendedor/catalogo" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left"></i> Volver al catálogo
               </a>
@@ -49,23 +56,5 @@
   </div>
 
   <script src="${pageContext.request.contextPath}/assets/js/cart.js"></script>
-  <script>
-    (function(){
-      const btn = document.getElementById('btnAddToCart');
-      if(!btn) return;
-      btn.addEventListener('click', function(e){
-        e.preventDefault();
-        const item = {
-          id: '${producto.idProducto}',
-          name: '${producto.nombre}'.trim(),
-          price: '${producto.precio}',
-          image: '${producto.imagen}',
-          qty: 1
-        };
-        Cart.addItem(item);
-        window.location.href = '${pageContext.request.contextPath}/vendedor/venta';
-      });
-    })();
-  </script>
 </body>
 </html>

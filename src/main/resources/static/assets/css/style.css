@@ -1,0 +1,836 @@
+/* ----------- General ----------- */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f5f7fa;
+    color: #222;
+    font-size: 1rem;
+}
+h5 {
+    font-size: 1.08rem;
+    color: #1976d2;
+    font-weight: 600;
+    margin-top: 1.2rem;
+    margin-bottom: 0.7rem;
+}
+.form-control:focus {
+    border-color: #1976d2;
+    box-shadow: 0 0 0 0.2rem rgba(25,118,210,.25);
+}
+
+/* ----------- Navbar ----------- */
+.navbar {
+    background: #1a237e;
+    box-shadow: 0 2px 12px rgba(26,35,126,0.07);
+}
+.navbar-brand {
+    font-weight: 700;
+    color: #222 !important;
+    letter-spacing: 1px;
+    font-size: 1.25rem;
+}
+.navbar .nav-link {
+    display: flex;
+    align-items: center;
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+    font-size: 1rem;
+    gap: 2px;
+}
+.navbar .bi-cart3 {
+    font-size: 1.15rem;
+    color: #757575;
+    margin-left: 0;
+    position: relative;
+    top: -3px; 
+}
+.navbar .nav-link:hover .bi-cart3 {
+    color: #43a047;
+}
+
+/* ----------- Login ----------- */
+.login-bg {
+    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0,0,0,0.55)),
+    url("../img/fonlogin.jpg") no-repeat center center/cover;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px);
+}
+
+/* ----------- Card General ----------- */
+.card {
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(26,35,126,0.08);
+    background: #fff;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: none;
+}
+.card-header {
+    background-color: #e0e3e7 !important;
+    color: #1976d2 !important;
+    text-align: center;
+    border-bottom: 1px solid #bdbdbd;
+}
+.card-header h2 {
+    color: #1976d2 !important;
+    font-weight: 700;
+    font-size: 2rem;
+    margin: 0;
+}
+.card-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 12px;
+}
+.card-body .d-flex {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+.card-body .badge.bg-success {
+    font-size: 0.95rem;
+    padding: 6px 14px;
+    margin-bottom: 8px;
+    display: inline-block;
+}
+
+/* ----------- Main Home ----------- */
+.main-home {
+    background-color: #ffe0b2;
+    box-shadow: 0 0 15px rgba(26,35,126,0.08);
+    border-radius: 15px;
+    text-align: center;
+}
+.main-home h1 {
+    color: #1976d2;
+    font-weight: bold;
+}
+.main-home p {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+/* ----------- Menú Lateral ----------- */
+.offcanvas {
+    background-color: #212529;
+    color: white;
+}
+.offcanvas a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.offcanvas a:hover {
+    color: #0d6efd;
+}
+
+/* ----------- Categorías ----------- */
+.img-categoria {
+    height: 250px;
+    object-fit: cover;
+    width: 100%;
+}
+
+/* ----------- CRUD ----------- */
+.img-crud {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(26,35,126,0.08);
+}
+.table-crud th, .table-crud td {
+    vertical-align: middle;
+    text-align: center;
+}
+form.mb-4 {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(26,35,126,0.07);
+    padding: 24px;
+    margin-bottom: 32px;
+}
+form .form-label {
+    font-weight: 500;
+    color: #1976d2;
+}
+.btn-primary, .btn-secondary {
+    min-width: 120px;
+}
+
+/* ----------- Publicidad ----------- */
+.banner {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    min-height: 350px;
+    background: url("../img/publicidad-afiche.jpg") no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    overflow: hidden;
+    margin-top: 40px;
+    box-shadow: 0 4px 24px rgba(26,35,126,0.12);
+}
+.banner .overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 1;
+}
+.banner-content {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    text-align: center;
+}
+.banner-content h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 18px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+.banner-content p {
+    font-size: 1.3rem;
+    margin-bottom: 22px;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.2);
+}
+.btn-banner {
+    background: #1976d2;
+    color: #fff;
+    padding: 12px 32px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(26,35,126,0.15);
+    transition: background 0.2s;
+    border: none;
+    display: inline-block;
+}
+.btn-banner:hover {
+    background: #1a237e;
+    color: #fff;
+}
+
+/* ----------- Métricas ----------- */
+.card-metric {
+    border-radius: 18px;
+    box-shadow: 0 2px 16px rgba(26,35,126,0.08);
+    background: #fff;
+    padding: 28px 0;
+    transition: transform 0.15s;
+}
+.card-metric:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 6px 24px rgba(26,35,126,0.13);
+}
+.card-metric .card-title {
+    font-size: 1.2rem;
+    color: #1976d2;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+.card-metric .display-5 {
+    font-size: 2.7rem;
+    margin-bottom: 8px;
+    color: #1a237e;
+}
+.card-metric .text-muted {
+    font-size: 1rem;
+    color: #888;
+}
+
+/* ----------- Catálogo ----------- */
+.card-img-top {
+    height: 200px;
+    object-fit: contain;
+    background: #e0e3e7;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    padding: 16px 0 8px 0;
+}
+.card-title {
+    color: #1976d2;
+    font-weight: 600;
+}
+.btn-success.btn-sm {
+    background: #43a047;
+    color: #fff;
+    border-radius: 8px;
+    border: none;
+}
+.btn-success.btn-sm:hover {
+    background: #388e3c;
+}
+.btn-outline-primary.btn-sm {
+    border-radius: 8px;
+    border-color: #1976d2;
+    color: #1976d2;
+}
+.btn-outline-primary.btn-sm:hover {
+    background: #1976d2;
+    color: #fff;
+}
+
+/* ----------- Contacto ----------- */
+.contact-page-header {
+    background: none;
+    color: #222;
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-top: 40px;
+    margin-bottom: 32px;
+    border-radius: 0;
+    padding: 0;
+}
+.contact-container {
+    width: 80%;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+@media (max-width: 900px) {
+    .contact-container {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+}
+.contact-info {
+    background: #fff;
+    padding: 28px;
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(26,35,126,0.08);
+}
+.contact-info h2 {
+    margin-bottom: 15px;
+    color: #1976d2;
+    font-weight: 600;
+}
+.contact-info p {
+    margin: 8px 0;
+}
+.contact-info iframe {
+    width: 100%;
+    height: 300px;
+    border: none;
+    border-radius: 12px;
+    margin-top: 18px;
+}
+.contact-form {
+    background: #fff;
+    padding: 28px;
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(26,35,126,0.08);
+    max-width: 600px;
+    margin: 0 auto;
+}
+.contact-form h2 {
+    margin-bottom: 15px;
+    color: #1976d2;
+    font-weight: 600;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #222;
+}
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e0e3e7;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+.form-group textarea {
+    resize: none;
+    height: 120px;
+}
+.contact-form button,
+.contact-form .btn-primary {
+    padding: 12px 20px;
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+.contact-form button:hover,
+.contact-form .btn-primary:hover {
+    background: #1a237e;
+}
+
+/* ----------- Gestión ----------- */
+.gestion-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 16px rgba(26,35,126,0.08);
+    padding: 40px 32px;
+    max-width: 1100px;
+    margin: 40px auto;
+}
+.gestion-card h2 {
+    color: #050505;
+    font-weight: 700;
+    margin-bottom: 32px;
+}
+.nav-tabs .nav-link {
+    color: #1976d2;
+    font-weight: 500;
+    border-radius: 8px 8px 0 0;
+    margin-right: 4px;
+    transition: background 0.2s;
+}
+.nav-tabs .nav-link.active {
+    background: #e0e3e7;
+    color: #1a237e;
+    border-bottom: 2px solid #1976d2;
+}
+.tab-pane {
+    padding: 24px 0 0 0;
+}
+.table {
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 18px;
+    background: #fff;
+}
+.table th {
+    background: #e0e3e7;
+    color: #1976d2;
+    font-weight: 600;
+    border-bottom: 2px solid #bdbdbd;
+}
+.table td {
+    vertical-align: middle;
+}
+.btn-outline-primary {
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 6px 18px;
+    border-color: #1976d2;
+    color: #1976d2;
+    transition: background 0.2s, color 0.2s;
+}
+.btn-outline-primary:hover {
+    background: #1976d2;
+    color: #fff;
+}
+
+/* ----------- Gestión Crear/Editar Producto ----------- */
+.gestion-form-container {
+    max-width: 600px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(26,35,126,0.10);
+    padding: 32px 28px;
+}
+.gestion-form-container h2 {
+    color: #1976d2;
+    font-weight: 700;
+    margin-bottom: 28px;
+    text-align: center;
+}
+.gestion-form-container .form-label {
+    font-weight: 500;
+    color: #1976d2;
+}
+.gestion-form-container .form-control,
+.gestion-form-container .form-select {
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 18px;
+}
+.gestion-form-container .btn-primary {
+    background: #1976d2;
+    border: none;
+    min-width: 120px;
+}
+.gestion-form-container .btn-primary:hover {
+    background: #1a237e;
+}
+.gestion-form-container .btn-secondary {
+    min-width: 120px;
+    background: #757575;
+    color: #fff;
+    border: none;
+}
+.gestion-form-container .btn-secondary:hover {
+    background: #616161;
+}
+
+/* ----------- Venta ----------- */
+.venta-form-container {
+    max-width: 900px;
+    margin: 60px auto;
+    background: #fff;
+    border-radius: 22px;
+    box-shadow: 0 4px 24px rgba(67,160,71,0.13);
+    padding: 48px 48px;
+}
+.venta-form-container .card-header {
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+    background: linear-gradient(90deg, #1976d2 70%, #1a237e 100%);
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 32px 0 24px 0;
+}
+.venta-form-container h4 {
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 0;
+    text-align: center;
+}
+.venta-form-container h5 {
+    color: #1976d2;
+    font-weight: 700;
+    margin-top: 32px;
+    margin-bottom: 24px;
+    font-size: 1.3rem;
+}
+.venta-form-container .row {
+    margin-bottom: 32px !important;
+}
+.venta-form-container .form-label {
+    font-weight: 500;
+    color: #1976d2;
+    margin-bottom: 6px;
+}
+.venta-form-container .form-control {
+    border-radius: 8px;
+    font-size: 1.1rem;
+    padding: 12px 16px;
+    margin-bottom: 18px;
+    background: #f5f7fa;
+    border: 1px solid #cfd8dc;
+}
+.venta-form-container .btn-success {
+    background: #43a047;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    min-width: 180px;
+    margin-right: 12px;
+}
+.venta-form-container .btn-success:hover {
+    background: #388e3c;
+}
+.venta-form-container .btn-outline-secondary {
+    min-width: 180px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-color: #757575;
+    color: #757575;
+    background: #fff;
+}
+.venta-form-container .btn-outline-secondary:hover {
+    background: #757575;
+    color: #fff;
+}
+.venta-form-container .fw-bold.fs-5 {
+    font-size: 1.4rem !important;
+    margin-top: 24px;
+    margin-bottom: 0;
+    color: #222;
+}
+.venta-form-container .text-success {
+    color: #43a047 !important;
+    font-weight: bold;
+}
+.venta-form-container .border {
+    border: 1px solid #e0e3e7;
+    background: #fff;
+}
+
+/* ----------- Métricas Dashboard ----------- */
+body {
+    background: #f5f8fc;
+}
+.metricas-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2.5rem;
+}
+.metricas-header i {
+    font-size: 2.5rem;
+    color: #1976d2;
+    margin-bottom: 0.5rem;
+}
+.card-metric {
+    background: #fff;
+    border-radius: 22px;
+    box-shadow: 0 4px 24px rgba(67,160,71,0.10);
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.dashboard-grid-metricas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem 2.5rem;
+    justify-content: center;
+}
+@media (min-width: 992px) {
+    .dashboard-grid-metricas > .col-lg-6 {
+        flex: 0 0 48%;
+        max-width: 48%;
+    }
+}
+
+/* ----------- Inventario sección ----------- */
+.inventario-section {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+}
+.inventario-section .card-metric {
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    box-shadow: 0 4px 24px rgba(255,82,82,0.10);
+}
+.list-group-item {
+    font-size: 1.08rem;
+    padding: 0.75rem 1.25rem;
+}
+.btn-outline-success {
+    min-width: 110px;
+    font-weight: 500;
+    border-radius: 8px;
+}
+
+/* ----------- Gestión ----------- */
+.card {
+    border-radius: 1rem;
+    overflow: hidden;
+}
+.card-header {
+    background-color: #e0e3e7 !important;
+    color: #1976d2 !important;
+    text-align: center;
+    border-bottom: 1px solid #bdbdbd;
+}
+.card-header h2 {
+    color: #1976d2 !important;
+    font-weight: 700;
+    font-size: 2rem;
+    margin: 0;
+}
+.table thead th {
+    background-color: #212529;
+    color: #fff;
+    text-align: center;
+}
+.table tbody td {
+    vertical-align: middle;
+}
+.nav-tabs .nav-link.active {
+    background-color: #0d6efd;
+    color: white;
+}
+.btn-primary:hover {
+    box-shadow: 0 0 8px #0d6efd55;
+    transform: translateY(-2px);
+}
+
+/* ----------- Badge ----------- */
+.badge.bg-success {
+    font-size: 0.95rem;
+    padding: 6px 14px;
+    margin-bottom: 8px;
+    display: inline-block;
+}
+
+/* ----------- Historial de Ventas ----------- */
+.ventas-container-amplia {
+    max-width: 1200px;
+    margin: 48px auto;
+    padding: 0 32px;
+}
+
+/* ----------- Asistencia ----------- */
+.attendance-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 6px 32px rgba(26,35,126,0.10);
+    width: 100%;
+    max-width: 430px;
+    margin: 40px auto;
+    overflow: hidden;
+    padding-bottom: 18px;
+}
+.card-header-custom {
+    background: linear-gradient(90deg, #1976d2 70%, #1a237e 100%);
+    color: #fff;
+    padding: 1.2rem 1rem;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+}
+.card-body-custom {
+    padding: 1.5rem 1.2rem 0.5rem 1.2rem;
+}
+.user-info {
+    background: #e0e3e7;
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.97rem;
+    box-shadow: 0 1px 8px rgba(26,35,126,0.04);
+}
+.user-info div {
+    margin-bottom: 4px;
+}
+.time-display {
+    font-size: 2.1rem;
+    font-weight: bold;
+    color: #1976d2;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    margin: 1.2rem 0 0.8rem 0;
+    letter-spacing: 2px;
+}
+.date-display {
+    font-size: 1.08rem;
+    color: #6c757d;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+.btn-attendance {
+    padding: 12px 0;
+    font-size: 1.08rem;
+    border-radius: 10px;
+    min-width: 150px;
+    border: none;
+    font-weight: 600;
+    margin: 0 8px;
+    box-shadow: 0 2px 8px rgba(26,35,126,0.08);
+    transition: background 0.2s, transform 0.15s;
+}
+.btn-ingreso {
+    background: #43a047;
+    color: #fff;
+}
+.btn-ingreso:hover {
+    background: #388e3c;
+    transform: translateY(-2px) scale(1.04);
+}
+.btn-salida {
+    background: #e53935;
+    color: #fff;
+}
+.btn-salida:hover {
+    background: #b71c2a;
+    transform: translateY(-2px) scale(1.04);
+}
+.status-message {
+    padding: 1rem;
+    border-radius: 10px;
+    margin: 1.2rem 0;
+    text-align: center;
+    font-weight: 500;
+    font-size: 1rem;
+    background: #fff3e0;
+    color: #ff9800;
+    border: 1px solid #ffe0b2;
+    box-shadow: 0 1px 8px rgba(26,35,126,0.04);
+}
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.7rem 0.2rem;
+    border-bottom: 1px solid #e0e3e7;
+    font-size: 0.97rem;
+}
+.history-item:last-child {
+    border-bottom: none;
+}
+.badge-status {
+    padding: 0.35rem 0.8rem;
+    border-radius: 50rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    background: #bdbdbd;
+    color: #fff;
+}
+.btn-outline-secondary, .btn-primary {
+    border-radius: 10px;
+    font-weight: 500;
+    padding: 8px 22px;
+    font-size: 1rem;
+}
+.btn-primary {
+    background: #1976d2;
+    border: none;
+}
+.btn-primary:hover {
+    background: #1a237e;
+}
+@media (max-width: 600px) {
+    .attendance-card {
+        padding: 0;
+        border-radius: 10px;
+        max-width: 98vw;
+    }
+    .card-header-custom {
+        font-size: 1rem;
+        padding: 1rem 0.5rem;
+    }
+    .card-body-custom {
+        padding: 1rem 0.5rem 0.5rem 0.5rem;
+    }
+}
+
+/* ----------- Métricas con Gráficos ----------- */
+.metric-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+    height: 100%;
+}
+.metric-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin: 20px 0;
+}
+canvas {
+    max-height: 300px;
+}

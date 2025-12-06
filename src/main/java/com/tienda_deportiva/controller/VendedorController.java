@@ -489,7 +489,7 @@ public class VendedorController {
             venta.setEstado("Pagado");
             venta.setIdCliente(idCliente);
 
-            Usuario usuarioActual = (Usuario) model.asMap().get("usuarioActual");
+            Usuario usuarioActual = (Usuario) session.getAttribute("usuarioActual");
             if (usuarioActual != null) venta.setIdUsuario(usuarioActual.getId_usuario().longValue());
 
             Long idVenta = ventaService.guardar(venta);
